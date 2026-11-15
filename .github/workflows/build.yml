@@ -14,9 +14,13 @@ on:
   workflow_dispatch:
     inputs:
       release:
-        description: '写进二进制的发布号，例如 0.2.33'
+        description: '写进二进制的发布号，例如 0.2.55'
         required: true
-        default: '0.2.33'
+        default: '0.2.55'
+      upstream:
+        description: '补丁基于哪个上游 tag，例如 v0.3.1'
+        required: true
+        default: 'v0.3.1'
 
 permissions:
   contents: write
@@ -46,14 +50,18 @@ jobs:
       - name: 取上游源码并打补丁
         run: |
           set -euxo pipefail
-          URL=https://codeload.github.com/kirklin/skyward/tar.gz/refs/tags/v0.2.0
+          # 补丁基于哪个上游 tag，由手动触发时的输入决定（v0.2.0 那条线用 v0.2.0，
+          # 现在这条线用 v0.3.1）。
+          URL=https://codeload.github.com/kirklin/skyward/tar.gz/refs/tags/${{ inputs.upstream }}
           echo "取 $URL"
           curl -fL --retry 3 -o upstream.tar.gz "$URL"
           ls -l upstream.tar.gz
           mkdir -p src
           tar xzf upstream.tar.gz -C src --strip-components=1
           ls src | head
-          PATCH=$(ls -1 patches/skyward-pudding-*.patch | sort -V | tail -1)
+          # 优先用与这次发布号同名的补丁，没有再取最新的一份。
+          PATCH=patches/skyward-pudding-v${{ inputs.release }}.patch
+          [ -f "$PATCH" ] || PATCH=$(ls -1 patches/skyward-pudding-*.patch | sort -V | tail -1)
           echo "补丁：$PATCH"
           cd src
           patch --version | head -1
