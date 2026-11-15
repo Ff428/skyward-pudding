@@ -1,6 +1,6 @@
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/Cargo.lock 项目/第三方REC-pudding/构建/skyward-0.3.1/Cargo.lock
---- 临时/up/src031/Cargo.lock	2026-11-14 00:13:16.622607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/Cargo.lock	2026-11-14 15:15:45.290999801 +0000
+diff -ruN a/Cargo.lock b/Cargo.lock
+--- a/Cargo.lock	2026-11-14 00:13:16.000000000 +0000
++++ b/Cargo.lock	2026-11-14 15:15:45.000000000 +0000
 @@ -1899,6 +1899,10 @@
  ]
  
@@ -20,23 +20,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
   "serde",
   "serde_json",
   "skyward-info",
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/decrypt.rs.rej 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/decrypt.rs.rej
---- 临时/up/src031/crates/skyward/src/decrypt.rs.rej	2026-11-14 00:13:16.626607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/decrypt.rs.rej	1970-01-01 00:00:00.000000000 +0000
-@@ -1,10 +0,0 @@
----- crates/skyward/src/decrypt.rs	2026-11-08 18:17:31.000000000 +0800
--+++ crates/skyward/src/decrypt.rs	2026-11-11 16:25:16.503999858 +0800
--@@ -33,6 +33,7 @@
-- 
-- impl Decryptor {
--     pub fn start(job: Job) -> Result<Decryptor> {
--+        data::restart();
--         let mut fds = [0; 2];
--         if unsafe { libc::pipe2(fds.as_mut_ptr(), libc::O_CLOEXEC | libc::O_NONBLOCK) } != 0 {
--             return Err(std::io::Error::last_os_error()).context("make the decrypting thread's wake pipe");
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/fetch.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/fetch.rs
---- 临时/up/src031/crates/skyward/src/fetch.rs	1970-01-01 00:00:00.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/fetch.rs	2026-11-14 15:15:45.210999801 +0000
+diff -ruN a/crates/skyward/src/fetch.rs b/crates/skyward/src/fetch.rs
+--- a/crates/skyward/src/fetch.rs	1970-01-01 00:00:00.000000000 +0000
++++ b/crates/skyward/src/fetch.rs	2026-11-14 15:15:45.000000000 +0000
 @@ -0,0 +1,157 @@
 +//! Fetching one file from an address typed on the download page: on a thread
 +//! of its own, so the page keeps up with how far it has come.
@@ -195,9 +181,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
 +    }
 +    Ok(())
 +}
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/fileserve.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/fileserve.rs
---- 临时/up/src031/crates/skyward/src/fileserve.rs	1970-01-01 00:00:00.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/fileserve.rs	2026-11-14 15:10:31.198999921 +0000
+diff -ruN a/crates/skyward/src/fileserve.rs b/crates/skyward/src/fileserve.rs
+--- a/crates/skyward/src/fileserve.rs	1970-01-01 00:00:00.000000000 +0000
++++ b/crates/skyward/src/fileserve.rs	2026-11-14 15:10:31.000000000 +0000
 @@ -0,0 +1,480 @@
 +//! A server on the network the phone is on, for the files in a folder: a
 +//! browser on another device lists them, takes them, and puts others there.
@@ -679,37 +665,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
 +    }
 +    out
 +}
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/input.rs.rej 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/input.rs.rej
---- 临时/up/src031/crates/skyward/src/input.rs.rej	2026-11-14 00:13:16.626607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/input.rs.rej	1970-01-01 00:00:00.000000000 +0000
-@@ -1,24 +0,0 @@
----- crates/skyward/src/input.rs	2026-11-12 15:39:20.707999874 +0800
--+++ crates/skyward/src/input.rs	2026-11-08 18:17:31.000000000 +0800
--@@ -309,20 +282,8 @@
--                     // The kernel's own repeats of a key held are left out;
--                     // the UI times its own.
--                     for e in events {
---                        if let Some(wake) = wake_event(&e) {
---                            out.push(wake);
---                            continue;
---                        }
--                         if let EventSummary::Key(_, code, value @ (0 | 1)) = e.destructure() {
---                            if code == KeyCode::KEY_WAKEUP {
---                                // The wakeup key may come from a device of its
---                                // own, as Xiaomi's touch layer injects it, and
---                                // not from the panel's node: the gesture is the
---                                // same either way.
---                                if value == 1 {
---                                    out.push(Event::Wake);
---                                }
---                            } else if let Some(k) = key_of(code) {
--+                            if let Some(k) = key_of(code) {
--                                 out.push(Event::Key(k, value == 1));
--                             }
--                         }
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/main.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/main.rs
---- 临时/up/src031/crates/skyward/src/main.rs	2026-11-14 00:13:16.626607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/main.rs	2026-11-14 15:40:59.514999927 +0000
+diff -ruN a/crates/skyward/src/main.rs b/crates/skyward/src/main.rs
+--- a/crates/skyward/src/main.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward/src/main.rs	2026-11-14 15:40:59.000000000 +0000
 @@ -9,9 +9,16 @@
  
  #[cfg(target_os = "android")]
@@ -1076,71 +1034,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
      match i.slot {
          Some(s) => println!("current_slot  = {}", s.suffix()),
          None => println!("current_slot  = (not A/B)"),
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/main.rs.rej 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/main.rs.rej
---- 临时/up/src031/crates/skyward/src/main.rs.rej	2026-11-14 00:13:16.626607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/main.rs.rej	1970-01-01 00:00:00.000000000 +0000
-@@ -1,58 +0,0 @@
----- crates/skyward/src/main.rs	2026-11-12 21:39:30.830256291 +0800
--+++ crates/skyward/src/main.rs	2026-11-08 18:17:31.000000000 +0800
--@@ -533,14 +482,12 @@
--     if !registering.is_empty() || !files.is_empty() {
--         let described = secure::publish_descriptions(&registering, &files)?;
--         skyward_sys::kmsg(&format!("{described} of the phone's own service descriptions published"))?;
---        skyward_ui::progress::reached(skyward_ui::progress::DESCRIPTIONS);
--     }
--     let libraries = secure::libraries()?;
--     if let Some(dir) = &libraries {
--         skyward_sys::kmsg(&format!("the phone's own libraries are at {}", dir.display()))?;
--     }
--     services::start(&services, libraries.as_deref())?;
---    skyward_ui::progress::reached(skyward_ui::progress::SERVICES);
--     agree_on_the_notes_key(&registering)
-- }
-- 
--@@ -750,30 +693,10 @@
--             // erasing them, which may take super with them, and undoing
--             // shared blocks, which writes to the slot's own.
--             if !matches!(request.work, bcb::Work::Fastboot | bcb::Work::WipeAb { .. } | bcb::Work::UnshareBlocks) {
---                // The screen comes up first: mapping super, mounting the slot's
---                // partitions, loading the drivers and starting the phone's own
---                // services takes seconds, and until the screen is drawn the
---                // phone looks stuck. What needs them waits for them instead --
---                // `wait_prepared` is what a page calls before it does.
---                let cfg = cfg.clone();
---                std::thread::Builder::new().name("prepare".into()).spawn(move || {
---                    let done = booted_slot()
---                        .map_err(|e| anyhow::anyhow!("{e:#}"))
---                        .and_then(|slot| prepare(&cfg, slot));
---                    if let Err(e) = done {
---                        let _ = skyward_sys::kmsg(&format!("devices not brought up: {e:#}"));
---                    }
---                    mark_prepared();
---                })?;
---            } else {
---                mark_prepared();
--+                prepare(&cfg, booted_slot()?)?;
--             }
--             let root = Path::new("/");
---            // The phone comes here to open its data partition, so that is what
---            // it is shown: the page opens the partition as it appears, and the
---            // control its screen lock is answered with is up by then. Leaving
---            // it, by its own way out or by the back key, is the menu.
---            ui::run(&cfg, &root.join(ramdisk::FONT), &root.join(ramdisk::MONO), request, Screen::Decrypt, None)
--+            ui::run(&cfg, &root.join(ramdisk::FONT), &root.join(ramdisk::MONO), request, Screen::Home, None)
--         }
--         #[cfg(not(target_os = "android"))]
--         {
--@@ -800,7 +578,6 @@
--             }
--             // Without them the screen still shows and the keys still work,
--             // so this reason goes to the kernel log as well.
---            skyward_ui::progress::reached(skyward_ui::progress::PARTITIONS);
--             if let Err(e) = bring_up(cfg, slot) {
--                 skyward_sys::kmsg(&format!("devices not brought up: {e:#}"))?;
--             }
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/portal.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/portal.rs
---- 临时/up/src031/crates/skyward/src/portal.rs	1970-01-01 00:00:00.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/portal.rs	2026-11-14 15:15:45.210999801 +0000
+diff -ruN a/crates/skyward/src/portal.rs b/crates/skyward/src/portal.rs
+--- a/crates/skyward/src/portal.rs	1970-01-01 00:00:00.000000000 +0000
++++ b/crates/skyward/src/portal.rs	2026-11-14 15:15:45.000000000 +0000
 @@ -0,0 +1,165 @@
 +//! A page on the network the phone joined, where the address of a file is
 +//! typed on another device and handed to this one: a link too long for the
@@ -1307,9 +1203,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
 +    }
 +    String::from_utf8_lossy(&out).to_string()
 +}
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/remember.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/remember.rs
---- 临时/up/src031/crates/skyward/src/remember.rs	1970-01-01 00:00:00.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/remember.rs	2026-11-14 10:56:40.826999778 +0000
+diff -ruN a/crates/skyward/src/remember.rs b/crates/skyward/src/remember.rs
+--- a/crates/skyward/src/remember.rs	1970-01-01 00:00:00.000000000 +0000
++++ b/crates/skyward/src/remember.rs	2026-11-14 10:56:40.000000000 +0000
 @@ -0,0 +1,60 @@
 +//! The screen lock a user chose to have kept, so that the data partition
 +//! opens as the recovery starts rather than waiting for it to be typed.
@@ -1371,9 +1267,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
 +        Err(e) => Err(e).with_context(|| format!("remove {FILE}")),
 +    })
 +}
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/secure.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/secure.rs
---- 临时/up/src031/crates/skyward/src/secure.rs	2026-11-13 23:40:53.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/secure.rs	2026-11-14 14:55:01.694999954 +0000
+diff -ruN a/crates/skyward/src/secure.rs b/crates/skyward/src/secure.rs
+--- a/crates/skyward/src/secure.rs	2026-11-13 23:40:53.000000000 +0000
++++ b/crates/skyward/src/secure.rs	2026-11-14 14:55:01.000000000 +0000
 @@ -202,7 +202,19 @@
  /// description of one program or in the one a whole partition shares, and
  /// the directory reads the whole of its description directory at once, so
@@ -1442,9 +1338,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
  /// What has registered with the service directory, each with the init
  /// service whose process serves it; the directory's own entry is left out.
  fn registered() -> Result<Vec<(String, String)>> {
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/services.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/services.rs
---- 临时/up/src031/crates/skyward/src/services.rs	2026-11-14 00:12:50.658607441 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/services.rs	2026-11-14 14:45:48.478999946 +0000
+diff -ruN a/crates/skyward/src/services.rs b/crates/skyward/src/services.rs
+--- a/crates/skyward/src/services.rs	2026-11-14 00:12:50.000000000 +0000
++++ b/crates/skyward/src/services.rs	2026-11-14 14:45:48.000000000 +0000
 @@ -68,7 +68,9 @@
              continue;
          }
@@ -1475,59 +1371,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
          let ended = match running(&s.path) {
              Some(pid) => wait_for(pid).map(|()| format!("pid {pid}, left by an earlier recovery service, exited")),
              None => run(s, who, given),
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/services.rs.rej 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/services.rs.rej
---- 临时/up/src031/crates/skyward/src/services.rs.rej	2026-11-14 00:13:16.630607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/services.rs.rej	1970-01-01 00:00:00.000000000 +0000
-@@ -1,46 +0,0 @@
----- crates/skyward/src/services.rs	2026-11-08 18:17:31.000000000 +0800
--+++ crates/skyward/src/services.rs	2026-11-12 20:54:08.978942543 +0800
--@@ -41,6 +41,22 @@
-- pub fn start(services: &[Service], libraries: Option<&Path>) -> Result<()> {
--     let known = ueventd::accounts(&ueventd::PASSWD_FILES.iter().chain(&ueventd::GROUP_FILES).copied().collect::<Vec<_>>());
--     for s in services {
--+        // One model's hardware comes in more than one build, and the
--+        // installed system's own properties say which: a program the
--+        // configuration marks with `when` runs only where the property holds.
--+        // The secure element and the weaver are the ones that need it — on the
--+        // builds without it they would take the secure world from the key
--+        // service, and the data partition would stay shut.
--+        if let Some(when) = &s.when {
--+            let holds = skyward_sys::prop(&when.property).as_deref() == Some(when.value.as_str());
--+            if !holds {
--+                let _ = skyward_sys::kmsg(&format!(
--+                    "{}: left out, as {} is not {}",
--+                    s.path, when.property, when.value
--+                ));
--+                continue;
--+            }
--+        }
--         if !Path::new(&s.path).is_file() {
--             bail!("{} is missing; is its partition mounted?", s.path);
--         }
--@@ -58,7 +74,11 @@
--         let waiting = s.clone();
--         let name = Path::new(&s.path).file_name().map_or_else(|| s.path.clone(), |n| n.to_string_lossy().into_owned());
--         thread::Builder::new().name(name).spawn(move || supervise(&s, &who)).context("start a supervising thread")?;
---        ready(&waiting)?;
--+        // A service that does not come up leaves its feature missing, not the
--+        // whole recovery: what follows is said and the next one is started.
--+        if let Err(e) = ready(&waiting) {
--+            let _ = skyward_sys::kmsg(&format!("{}: {e:#}", waiting.path));
--+        }
--     }
--     Ok(())
-- }
--@@ -192,6 +212,7 @@
-- fn supervise(s: &Service, who: &Credentials) -> ! {
--     loop {
--         let started = Instant::now();
--+        let _ = skyward_sys::kmsg(&format!("{}: being started", s.path));
--         let ended = match running(&s.path) {
--             Some(pid) => wait_for(pid).map(|()| format!("pid {pid}, left by an earlier recovery service, exited")),
--             None => run(s, who),
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/sortmem.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/sortmem.rs
---- 临时/up/src031/crates/skyward/src/sortmem.rs	1970-01-01 00:00:00.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/sortmem.rs	2026-11-14 15:40:59.466999927 +0000
+diff -ruN a/crates/skyward/src/sortmem.rs b/crates/skyward/src/sortmem.rs
+--- a/crates/skyward/src/sortmem.rs	1970-01-01 00:00:00.000000000 +0000
++++ b/crates/skyward/src/sortmem.rs	2026-11-14 15:40:59.000000000 +0000
 @@ -0,0 +1,46 @@
 +//! The order the file manager shows entries in, kept between starts.
 +
@@ -1575,9 +1421,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
 +    let _ = skyward_block::mount::remount_writable(Path::new("/metadata"), false);
 +    written
 +}
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/ui.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/ui.rs
---- 临时/up/src031/crates/skyward/src/ui.rs	2026-11-14 00:13:16.634607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/ui.rs	2026-11-15 00:13:37.332235328 +0000
+diff -ruN a/crates/skyward/src/ui.rs b/crates/skyward/src/ui.rs
+--- a/crates/skyward/src/ui.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward/src/ui.rs	2026-11-15 00:13:37.000000000 +0000
 @@ -14,6 +14,7 @@
  use crate::systems;
  use crate::updates;
@@ -2248,809 +2094,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
              Effect::CheckUpdate => self.check_update()?,
              Effect::Download(release) => self.download(release, now)?,
              Effect::StopDownload => self.downloader.as_ref().context("there is no download to stop")?.stop(),
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/ui.rs.rej 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/ui.rs.rej
---- 临时/up/src031/crates/skyward/src/ui.rs.rej	2026-11-14 00:13:16.634607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/ui.rs.rej	1970-01-01 00:00:00.000000000 +0000
-@@ -1,796 +0,0 @@
----- crates/skyward/src/ui.rs	2026-11-12 23:01:25.605969979 +0800
--+++ crates/skyward/src/ui.rs	2026-11-08 18:17:31.000000000 +0800
--@@ -1054,13 +988,9 @@
--     let mut surface = KmsSurface::open("/dev/dri/card0")?;
--     let (w, h) = surface.size();
--     eprintln!("display {}", surface.describe());
---    // Which build is running, and on what display: a page that will not light
---    // is read from this log, so what wrote it has to be in it.
---    note(&format!("skyward {} up, the display {}", skyward_info::RELEASE, surface.describe()))?;
--     let mut inputs = Inputs::open(w, h, cfg.touch.writes.clone())?;
--     let started = Instant::now();
--     let mut touch_known = false;
---    let mut said_missing = false;
--     // adbd and fastbootd ask over it to go over to fastboot and back.
--     let control = Control::open()?;
--     let mut haptics = cfg.haptics.as_ref().map(Haptics::open).transpose()?;
--@@ -1108,19 +1038,7 @@
--     // Opening the data partition, or a user's own files in it, under way,
--     // and the users whose own files are still closed once it is open.
--     let mut decryptor: Option<Decryptor> = None;
---    // The opening asked for before the phone's own parts are up: it starts as
---    // soon as they are, without the screen standing still until then.
---    let mut pending_open: Option<decrypt::Job> = None;
---    // The download the fetch page asked for, running behind the screen.
---    let mut fetcher: Option<fetch::Worker> = None;
--     let mut closed: Vec<Closed> = Vec::new();
---    // The screen lock kept from before, where one was kept, so that the data
---    // partition opens as the recovery starts.
---    let mut remembered: Option<Vec<u8>> = remember::read();
---    let mut tried_remembered = false;
---    let mut attempt_was_remembered = false;
---    let mut last_credential: Option<Vec<u8>> = None;
---    app.state.remember = remembered.is_some();
--     let mut arriving = Some(Incoming::Arrived);
--     // The mount page shows the partitions as they are when it opens and
--     // after each change; why they cannot be read is the page's to say.
--@@ -1140,29 +1058,8 @@
--     // Whether the panel's frame memory has been blacked out for an off
--     // panel; cleared once a real frame is shown again.
--     let mut blanked = false;
---    // Where the display stands, for the log: whether it is lit, when it went
---    // dark, and whether the phone was let sleep.
---    let mut was_lit = true;
---    let mut dark_at: Option<Instant> = None;
---    let mut could_sleep = false;
---    // Whether the page has said, for the dark stretch it is in, that the panel
---    // is left running.
---    let mut keeps_running = false;
---    // When the decrypt page's state was last written to the log, so that a
---    // page whose bar or ring does not move can be seen for what it is.
---    let mut decrypt_logged = Instant::now();
---    // How many turns of the loop have been taken since the decrypt page was
---    // last written to the log.
---    let mut ticks: u64 = 0;
---    // When the control centre was last written to the log.
---    let mut shade_logged = Instant::now();
---    // The last tap taken on a dark panel: where it landed and when, on the
---    // clock the panel stamps its events by, for the double tap that lights
---    // it. The panel reports touches while the page is dark, but reports the
---    // wakeup key only when the firmware itself is put in its gesture mode,
---    // which the page does not reach; two taps in quick succession are taken
---    // as the double tap the phone's own system lights up to.
---    let mut last_tap: Option<(f32, f32, u64)> = None;
--+    // When the panel gone dark began to rest.
--+    let mut rested_at: Option<Instant> = None;
--     // Started for fastboot, the port goes to the phone's own fastbootd. The
--     // page says whether it came up and how far a computer has the port;
--     // why it did not come up goes to the kernel log and on screen.
--@@ -1392,18 +1289,6 @@
--         None => None,
--     };
--     let mut scanned_at = Instant::now();
---    // The WLAN kept: whether it opens as the recovery starts, and the network
---    // it joins by itself with the password that worked.
---    let wlan_settings = wlanmem::read();
---    let mut wlan_saved = wlan_settings.saved.clone();
---    app.state.wlan_auto = wlan_settings.auto;
---    app.state.wlan_keep = wlan_settings.keep;
---    let mut wlan_opened = false;
---    let mut wlan_joined = false;
---    let mut wlan_retries = 0u32;
---    let mut wlan_failed_at: Option<Instant> = None;
---    let mut wlan_password: Option<String> = None;
---    let mut wlan_kept = false;
--     app.state.update_server = cfg.update.is_some();
--     // Asking the update server, and downloading the full package.
--     let mut checker: Option<updates::Worker> = None;
--@@ -1421,103 +1306,8 @@
--     let mut plugged: Option<Plugged> = None;
--     let mut seen: Option<String> = None;
--     let mut drive_at = Instant::now();
---    // The work of handing the folder to another device, while it is served.
---    let mut server: Option<crate::fileserve::Server> = None;
---    let mut serving = false;
---    // The page another device reaches to hand a link over, while the download
---    // page is open.
---    let mut portal: Option<crate::portal::Portal> = None;
---    // When the page could not be served again: the port may still be closing.
---    let mut portal_retry_at: Option<u64> = None;
---    // The panel's own doze, where the display driver offers one.
---    let mut doze = cfg.aod.as_ref().map(crate::aod::Panel::new);
---    if let Some(d) = doze.as_ref() {
---        let _ = skyward_sys::kmsg(&format!("the own doze is {}usable", if d.usable() { "" } else { "not " }));
---    }
---    let mut weaver_looked = false;
---    // Double tap, switched on in the touch driver once the phone is up.
---    let mut touch_gesture: Option<crate::touchprobe::Gesture> = None;
---    // The order the file manager was left in, and the one on the page now.
---    if let Some((key, desc, folders)) = crate::sortmem::read() {
---        app.set_sort_prefs(key, desc, folders);
---    }
---    let mut sort_kept = Some((app.state.sort, app.state.sort_desc, app.state.folders_first));
--     loop {
--         let now = monotonic_ms();
---        // Said once, after the phone's own parts are up and its vendor
---        // partition is mounted: which weaver it keeps, and how that weaver
---        // reaches the secure element.
---        if !weaver_looked && crate::prepared() {
---            weaver_looked = true;
---            let _ = skyward_sys::kmsg(&weaver_line());
---            let said = crate::touchprobe::line();
---            let _ = skyward_sys::kmsg(&said);
---            let _ = std::fs::write("/data/local/tmp/touch-probe", format!("{said}\n"));
---            match crate::touchprobe::Gesture::enable("/dev/xiaomi-touch", 0) {
---                Ok(g) => {
---                    touch_gesture = Some(g);
---                    let _ = skyward_sys::kmsg("double tap is the touch panel's own now");
---                }
---                Err(e) => {
---                    let _ = skyward_sys::kmsg(&format!("double tap stays with the pages: {e:#}"));
---                }
---            }
---        }
---        // What the file server answered is kept in step with the page, and the
---        // server is stopped once the page it was started from is left: its
---        // port is held until then.
---        if let Some(s) = server.as_ref() {
---            app.serving_progress(s.served());
---        }
---        let sort = (app.state.sort, app.state.sort_desc, app.state.folders_first);
---        if sort_kept != Some(sort) && crate::sortmem::write(sort.0, sort.1, sort.2).is_ok() {
---            sort_kept = Some(sort);
---        }
---        // The download page offers a page another device can reach, where a
---        // long address is typed and handed over: it is served while that page
---        // is open, and what is typed there fills its field.
---        if app.screen() == skyward_ui::app::Screen::Fetch {
---            if portal.is_none() && portal_retry_at.is_none_or(|at| now >= at) {
---                if let Some(ip) = app.wlan_address() {
---                    match crate::portal::Portal::start(&ip.to_string()) {
---                        Ok(p) => {
---                            let _ = skyward_sys::kmsg(&format!("the download page is served at {}", p.url()));
---                            app.set_portal(Some(p.url().to_string()));
---                            portal = Some(p);
---                            portal_retry_at = None;
---                        }
---                        Err(e) => {
---                            // Said once, then left alone for a while: a port the
---                            // last visit has not closed yet is not worth a line
---                            // every turn of the loop.
---                            let _ = skyward_sys::kmsg(&format!("the download page is not served: {e:#}"));
---                            portal_retry_at = Some(now + 3000);
---                        }
---                    }
---                }
---            }
---            if let Some(p) = &portal {
---                if let Some(link) = p.take() {
---                    let _ = skyward_sys::kmsg("a link came from the page another device opened");
---                    app.hand_link(link, now);
---                }
---            }
---        } else if portal.is_some() {
---            portal = None;
---            portal_retry_at = None;
---            app.set_portal(None);
---        }
---        // The data page says it waits for the phone's own parts until they are
---        // up; the work behind it says when that is.
---        if !app.state.prepared && crate::prepared() {
---            app.state.prepared = true;
---            // The boot control is one of the services brought up behind the
---            // page, so what starts next can only be read once they are up:
---            // read again now, rather than leave the page saying it is
---            // unreadable until someone opens the slot page.
---            app.set_boot_slots(read_slots());
---            app.refresh();
---        }
--         if leave_at.is_some_and(|at| now >= at) {
--             leave_at = None;
--             power(leave)?;
--@@ -1527,17 +1317,8 @@
--             if !inputs.has_panel() {
--                 skyward_sys::kmsg("no touch panel came up; the pages are worked with the keys")?;
--                 app.touchscreen_missing();
---                said_missing = true;
--             }
--         }
---        // The driver of this phone's touchscreen brings its input device up
---        // seconds after the module is loaded; until then the pages are worked
---        // with the keys, and touches are taken again once it is there.
---        if said_missing && inputs.has_panel() {
---            said_missing = false;
---            skyward_sys::kmsg("the touch panel came up; the pages take touches again")?;
---            app.touchscreen_found();
---        }
--         for fx in app.tick(now) {
--             match fx {
--                 Effect::Haptic => {
--@@ -1545,13 +1326,6 @@
--                         h.click(app.state.vibration)?;
--                     }
--                 }
---                // A screenshot the page asked for as time went by, taken of the
---                // frame on the panel now that the control centre is out of it.
---                Effect::Screenshot { storage } => {
---                    let saved = save_screenshot(&screen, storage, app.state.time_zone).map_err(|e| format!("{e:#}"));
---                    eprintln!("screenshot {saved:?}");
---                    app.screenshot_saved(saved, now);
---                }
--                 // The power key held past its wait for volume down turns
--                 // the screen off.
--                 Effect::Ticks => {
--@@ -1565,8 +1339,6 @@
--         let time = clock(app.state.time_zone)?;
--         if time != shown_clock {
--             shown_clock = time;
---            let date = skyward_ui::fmt::date(app.state.lang, unix_now()?, app.state.time_zone);
---            app.set_date(date);
--             app.redraw();
--         }
--         for reading in readings.taken() {
--@@ -1602,22 +1374,10 @@
--             port_at = Instant::now();
--         }
--         let panel = app.panel(now);
---        let lit = panel.is_some();
---        if lit != was_lit {
---            match (lit, dark_at.take()) {
---                (false, _) => {
---                    dark_at = Some(Instant::now());
---                    note("the display is dark")?;
---                }
---                (true, Some(at)) => note(&format!("the display is lit again after {} ms", at.elapsed().as_millis()))?,
---                (true, None) => note("the display is lit")?,
---            }
---            was_lit = lit;
---        }
--         let mut shown = false;
--         if panel.is_some() {
--             // A display turned off comes on again with a frame drawn for it.
---            if app.take_dirty() || app.animating() || !surface.is_on() {
--+            if app.take_dirty() || !surface.is_on() {
--                 let t0 = Instant::now();
--                 app.compose(&mut screen, &fonts, &info, &shown_clock, now);
--                 surface.present(&screen)?;
--@@ -1648,18 +1408,17 @@
--             // Lit, a panel that came on again switches to its fastest
--             // refresh.
--             surface.speed_up()?;
---            if let Some(d) = doze.as_mut() {
---                let _ = d.want(skyward_ui::aod::Want::Lit);
---            }
---            keeps_running = false;
---        } else if surface.is_on() && !keeps_running {
---            // The panel keeps running: at rest its driver stops reporting the
---            // finger, and the gesture engine stays idle until the panel's DRM
---            // notifier says otherwise (2026-11-12: with the panel at rest the
---            // double tap never reached the page). The backlight is off, so
---            // nothing shows; the panel itself keeps drawing its power.
---            note("the display is dark; the panel keeps running for the double tap")?;
---            keeps_running = true;
--+            rested_at = None;
--+        } else if surface.is_on() {
--+            // With the backlight off, the panel rests, and the touch
--+            // controller following it stops drawing power.
--+            surface.rest()?;
--+            rested_at = Some(Instant::now());
--+        } else if rested_at.is_some_and(|at| at.elapsed() >= REST) {
--+            // Rested long enough, the display goes off: the panel and the
--+            // display processor feeding it stop drawing power.
--+            surface.turn_off()?;
--+            rested_at = None;
--         }
--         // A page at rest draws the rows it has yet to while nothing else
--         // is to be done, a band at a time, looking for input between bands.
--@@ -1670,7 +1429,8 @@
--         let floor = if shown { 0 } else { 1 };
--         let until_due = app.deadline(now).map(|d| d.saturating_sub(now) as i32);
--         // A resting panel turns off once its rest is over.
---        let timeout = if ahead || app.animating() { 0 } else { until_due.map_or(1000, |t| t.clamp(floor, 1000)) };
--+        let rest_left = rested_at.map(|at| REST.saturating_sub(at.elapsed()).as_millis() as i32);
--+        let timeout = if ahead { 0 } else { until_due.into_iter().chain(rest_left).min().map_or(1000, |t| t.clamp(floor, 1000)) };
--         // With the display off, the phone sleeps unless something needs it
--         // awake: work under way, fastboot or sideload, a restart on its way,
--         // a command running in the terminal, a network being joined, the
--@@ -1684,8 +1444,6 @@
--             || backuper.is_some()
--             || merger.is_some()
--             || decryptor.is_some()
---            || pending_open.is_some()
---            || fetcher.is_some()
--             || part_worker.is_some()
--             || checker.is_some()
--             || downloader.is_some()
--@@ -1706,10 +1464,6 @@
--             && !running
--             && asked.is_none()
--             && usb_link()? != UsbLink::Connected;
---        if may_sleep != could_sleep {
---            note(if may_sleep { "the phone may sleep now" } else { "the phone has to stay awake" })?;
---            could_sleep = may_sleep;
---        }
--         sleeper.allow(may_sleep);
--         let mut fds = vec![inputs.fd(), uevents.fd(), sleeper.fd()];
--         if let Some(i) = &installer {
--@@ -1739,9 +1493,6 @@
--         if let Some(d) = &decryptor {
--             fds.push(d.fd());
--         }
---        if let Some(w) = &fetcher {
---            fds.push(w.fd());
---        }
--         if let Some(p) = &part_worker {
--             fds.push(p.fd());
--         }
--@@ -2096,81 +1847,9 @@
--                 app.set_traffic(t);
--             }
--         }
---        // The WLAN kept is opened once the phone's own parts are up, and
---        // joined as soon as its network shows.
---        if app.state.wlan_auto && !wlan_joined {
---            if let Some(saved) = wlan_saved.clone() {
---                let power = app.state.wlan.as_ref().map(|w| w.power.clone());
---                if crate::prepared() && !wlan_opened && matches!(power, Some(WlanPower::Off | WlanPower::Failed(_))) {
---                    wlan_opened = true;
---                    wlan_worker(&wlan)?.send(wlan::Command::On);
---                    skyward_sys::kmsg("the WLAN is opened for the network kept")?;
---                }
---                let found = app.state.wlan.as_ref().and_then(|w| w.networks.iter().find(|n| n.ssid == saved.ssid)).cloned();
---                if matches!(power, Some(WlanPower::On)) {
---                    if let Some(found) = found {
---                        wlan_joined = true;
---                        wlan_password = Some(saved.password.clone());
---                        skyward_sys::kmsg(&format!("joining the network kept: {}", found.name))?;
---                        wlan_worker(&wlan)?.send(wlan::Command::Join {
---                            ssid: found.ssid,
---                            name: found.name,
---                            security: found.security,
---                            password: saved.password,
---                        });
---                    }
---                }
---            }
---        }
---        // A WLAN that did not come up is tried again a few times: the driver
---        // sometimes needs longer than the first go gives it.
---        if app.state.wlan_auto && !wlan_joined && wlan_retries < 3 {
---            let failed = app.state.wlan.as_ref().is_some_and(|w| matches!(w.power, WlanPower::Failed(_)));
---            if failed && wlan_failed_at.is_none_or(|at| at.elapsed() >= Duration::from_secs(5)) {
---                wlan_retries += 1;
---                wlan_failed_at = Some(Instant::now());
---                wlan_worker(&wlan)?.send(wlan::Command::On);
---                skyward_sys::kmsg("the WLAN is opened again after it did not come up")?;
---            }
---        }
---        // A network joined with a password the recovery has: kept for the
---        // starts that follow, or forgotten where the access point refused it.
---        if app.state.wlan_keep && !wlan_kept {
---            if let Some(joined) = app.state.wlan.as_ref().and_then(|w| w.joined.as_ref()) {
---                match &joined.stage {
---                    Joining::Connected(_) => {
---                        if let Some(password) = &wlan_password {
---                            match wlanmem::save(&joined.ssid, password) {
---                                Ok(()) => {
---                                    wlan_kept = true;
---                                    skyward_sys::kmsg(&format!("the network {} is kept for the starts that follow", joined.name))?;
---                                }
---                                Err(e) => skyward_sys::kmsg(&format!("the network was not kept: {e:#}"))?,
---                            }
---                        }
---                    }
---                    Joining::WrongPassword => {
---                        wlan_kept = true;
---                        wlan_saved = None;
---                        wlan_password = None;
---                        let _ = wlanmem::forget_network();
---                        skyward_sys::kmsg("the password kept was refused; the WLAN stays on and the network is forgotten")?;
---                    }
---                    _ => {}
---                }
---            }
---        }
---        let wlan_on = app.state.wlan.as_ref().is_some_and(|w| w.power == WlanPower::On);
---        // The scan the driver answers with right after it comes up often holds
---        // nothing; the network kept is looked for more often than the page
---        // looks for its own, so that joining it does not wait for the
---        // supplicant's own slow round.
---        if app.state.wlan_auto && !wlan_joined && wlan_on && scanned_at.elapsed() >= LOOKING_FOR {
---            scanned_at = Instant::now();
---            wlan_worker(&wlan)?.send(wlan::Command::Scan);
---        }
--         // The WLAN page scans again now and then while it shows, as the
--         // stock settings do.
--+        let wlan_on = app.state.wlan.as_ref().is_some_and(|w| w.power == WlanPower::On);
--         if app.screen() == Screen::Wlan && wlan_on && scanned_at.elapsed() >= SCAN_EVERY {
--             scanned_at = Instant::now();
--             wlan_worker(&wlan)?.send(wlan::Command::Scan);
--@@ -2281,28 +1960,8 @@
--         if updated {
--             skyward_updater = None;
--         }
---        if let Some(w) = &fetcher {
---            let (done, total) = w.progress();
---            app.fetch_progress(done, total);
---        }
---        if let Some(ended) = fetcher.as_ref().and_then(fetch::Worker::ended) {
---            fetcher = None;
---            match ended {
---                fetch::Ended::Done { path, bytes } => app.fetch_ended(Ok((path.display().to_string(), bytes)), now),
---                fetch::Ended::Failed(why) => app.fetch_ended(Err(why), now),
---                fetch::Ended::Stopped => app.fetch_stopped(),
---            }
---        }
--         if let Some(ended) = decryptor.as_ref().and_then(Decryptor::ended) {
--             decryptor = None;
---            note(match &ended {
---                decrypt::Ended::Opened(Ok(_)) => "the opening ended; the data partition is open",
---                decrypt::Ended::Opened(Err(_)) => "the opening ended, and the data partition did not open",
---                decrypt::Ended::Unlocked(Ok(_)) => "the opening of a user's files ended",
---                decrypt::Ended::Unlocked(Err(_)) => "the opening of a user's files ended, and they did not open",
---            })?;
---            // The bar on the page reached its end as the opening did.
---            app.set_data_progress(1.0);
--             match ended {
--                 decrypt::Ended::Opened(Ok(opening)) => {
--                     if let Some(mounted) = &opening.mounted {
--@@ -2310,20 +1969,6 @@
--                     }
--                     closed = opening.closed;
--                     show_closed(&mut app, &closed)?;
---                    // The screen lock kept from before opens the user's own
---                    // files without anyone typing it. A wrong one is not tried
---                    // again: the secure world counts it against the user.
---                    if !tried_remembered && !closed.is_empty() {
---                        tried_remembered = true;
---                        if let (Some(credential), Some(first)) = (remembered.clone(), closed.first()) {
---                            let user = first.user;
---                            skyward_sys::kmsg(&format!("opening user {user}'s files with the screen lock kept from before"))?;
---                            last_credential = Some(credential.clone());
---                            attempt_was_remembered = true;
---                            let job = decrypt::Job::Unlock { closed: closed.clone(), user, credential };
---                            decryptor = Some(Decryptor::start(job)?);
---                        }
---                    }
--                 }
--                 decrypt::Ended::Opened(Err(why)) => {
--                     skyward_sys::kmsg(&format!("the data partition stays closed: {why}"))?;
--@@ -2340,42 +1985,11 @@
--                     app.data_failed(why);
--                 }
--                 decrypt::Ended::Unlocked(Ok(still)) => {
---                    let opened = still.len() < closed.len();
--                     closed = still;
--                     show_closed(&mut app, &closed)?;
---                    // The page has done its work: the menu is what to show,
---                    // with no page of its own in between. One that failed to
---                    // open the partition stays where it is.
---                    if closed.is_empty() {
---                        app.decrypted();
---                    }
---                    if opened {
---                        match (app.state.remember, last_credential.as_deref()) {
---                            (true, Some(credential)) => match remember::write(credential) {
---                                Ok(()) => {
---                                    remembered = Some(credential.to_vec());
---                                    skyward_sys::kmsg("the screen lock is kept for the starts that follow")?;
---                                }
---                                Err(e) => skyward_sys::kmsg(&format!("the screen lock was not kept: {e:#}"))?,
---                            },
---                            (false, _) => {
---                                remembered = None;
---                                if let Err(e) = remember::forget() {
---                                    skyward_sys::kmsg(&format!("the kept screen lock was not forgotten: {e:#}"))?;
---                                }
---                            }
---                            _ => {}
---                        }
---                    }
--                 }
--                 decrypt::Ended::Unlocked(Err(why)) => {
--                     skyward_sys::kmsg(&format!("what was entered did not open the user's files: {why}"))?;
---                    if attempt_was_remembered {
---                        remembered = None;
---                        app.state.remember = false;
---                        let _ = remember::forget();
---                        skyward_sys::kmsg("the screen lock kept from before did not open the user's files, so it is forgotten")?;
---                    }
--                     app.unlock_failed(why, now);
--                 }
--             }
--@@ -2416,26 +2030,6 @@
--                 shell = None;
--             }
--         }
---        ticks += 1;
---        if app.shade_busy() && shade_logged.elapsed() >= Duration::from_millis(250) {
---            shade_logged = Instant::now();
---            note(&format!("the control centre: now={now} {}", app.shade_spot()))?;
---        }
---        if pending_open.is_some() && crate::prepared() {
---            let job = pending_open.take().expect("checked above");
---            note("the phone's own parts are up; the opening starts now")?;
---            decryptor = Some(Decryptor::start(job)?);
---        }
---        if app.screen() == Screen::Decrypt && decrypt_logged.elapsed() >= Duration::from_millis(500) {
---            decrypt_logged = Instant::now();
---            note(&format!("the decrypt page: now={now} ticks={ticks} {}", app.decrypt_spot()))?;
---            ticks = 0;
---        }
---        // How far opening the data partition has come, which the bar on the
---        // page that waits on it shows.
---        if decryptor.is_some() {
---            app.set_data_progress(skyward_crypto::data::progress());
---        }
--         // Then what programs asked on the recovery socket, each answered as
--         // the recovery stands when its turn comes.
--         let requests = match &control {
--@@ -2456,72 +2050,9 @@
--                     skyward_sys::kmsg(&format!("asked on the recovery socket: {asked:?}"))?;
--                     answer(asked, fastboot)
--                 }
---                Incoming::Input(Event::Touch(t, at)) => {
---                    if app.panel_lit() {
---                        // A panel that is lit is worked by touch as usual, and
---                        // no tap is held over from before it lit.
---                        last_tap = None;
---                        app.touch(t, &fonts, at)
---                    } else {
---                        let resting = !surface.is_on();
---                        let what = match t {
---                            Touch::Down(x, y) => format!("down at {x:.0},{y:.0}"),
---                            Touch::Move(x, y) => format!("move at {x:.0},{y:.0}"),
---                            Touch::Up => "up".to_string(),
---                        };
---                        note(&format!(
---                            "a touch came while the display was dark, the panel {}: {what} at {at} ms",
---                            if resting { "at rest" } else { "running" }
---                        ))?;
---                        // The panel's own gesture answers a double tap where the
---                        // driver reports it; the pages watch for two taps only
---                        // when there is no such gesture to lean on.
---                        let second = match (t, last_tap) {
---                            (Touch::Down(x, y), Some((was_x, was_y, was_at))) => {
---                                at.saturating_sub(was_at) <= DOUBLE_TAP_MS
---                                    && (x - was_x).abs() <= DOUBLE_TAP_SLOP
---                                    && (y - was_y).abs() <= DOUBLE_TAP_SLOP
---                            }
---                            _ => false,
---                        };
---                        if let (Touch::Down(x, y), true) = (t, second) {
---                            note(&format!("a double tap at {x:.0},{y:.0} lit the display"))?;
---                            last_tap = None;
---                            let mut fx = app.key(Key::Power, now);
---                            fx.extend(app.key_up(Key::Power, now));
---                            fx
---                        } else {
---                            if let Touch::Down(x, y) = t {
---                                last_tap = Some((x, y, at));
---                            }
---                            // A finger on the dark panel lights nothing.
---                            app.touch(t, &fonts, at)
---                        }
---                    }
---                }
---                Incoming::Input(Event::Key(k, true)) => {
---                    if !app.panel_lit() {
---                        note("a key came while the display was dark")?;
---                    }
---                    app.key(k, now)
---                }
--+                Incoming::Input(Event::Touch(t, at)) => app.touch(t, &fonts, at),
--+                Incoming::Input(Event::Key(k, true)) => app.key(k, now),
--                 Incoming::Input(Event::Key(k, false)) => app.key_up(k, now),
---                // The touchscreen's double tap, which the panel reports as the
---                // wakeup key. A dark panel is lit the way its power key lights
---                // it — onto the lock — with the release following at once so
---                // the press cannot grow into a hold; a lit panel only keeps
---                // awake, as a touch does.
---                Incoming::Input(Event::Wake) => {
---                    if app.panel_lit() {
---                        note("a double tap came while the display was lit")?;
---                        Vec::new()
---                    } else {
---                        note("a wake gesture came from the panel while the display was dark")?;
---                        let mut fx = app.key(Key::Power, now);
---                        fx.extend(app.key_up(Key::Power, now));
---                        fx
---                    }
---                }
--             };
--             // What the pages ask for in answer to the work done goes on
--             // after it.
--@@ -2629,44 +2160,6 @@
--                         eprintln!("screenshot {saved:?} in {} ms", t0.elapsed().as_millis());
--                         app.screenshot_saved(saved, now);
--                     }
---                    Effect::Serve(root) => {
---                        serving = root.is_some();
---                        match root {
---                            Some(root) => {
---                                let at = match app.wlan_address() {
---                                    Some(ip) => format!("http://{ip}:{}/", crate::fileserve::PORT),
---                                    None => format!("http://<phone>:{}/", crate::fileserve::PORT),
---                                };
---                                let _ = skyward_sys::kmsg(&format!("serving {root} at {at}"));
---                                match crate::fileserve::Server::start(PathBuf::from(root)) {
---                                    Ok(s) => {
---                                        server = Some(s);
---                                        app.serving_at(at);
---                                    }
---                                    Err(e) => app.serving_failed(format!("{e:#}")),
---                                }
---                            }
---                            None => {
---                                server = None;
---                                let _ = skyward_sys::kmsg("the file server stopped");
---                            }
---                        }
---                    }
---                    Effect::Fetch(url) => {
---                        let name = fetch::name_of(&url);
---                        let path = Path::new(skyward_crypto::data::SDCARD).join("Download").join(&name);
---                        note(&format!("fetching {url} into {}", path.display()))?;
---                        // The names in the address are looked up with the
---                        // servers the joined network gave.
---                        let servers = std::sync::Arc::new(std::sync::Mutex::new(app.dns_servers()));
---                        fetcher = Some(fetch::Worker::start(url, path, servers)?);
---                    }
---                    Effect::StopFetch => {
---                        if let Some(w) = &fetcher {
---                            note("the download is stopped, as the page asked")?;
---                            w.stop();
---                        }
---                    }
--                     Effect::Sideload => {
--                         ensure!(installer.is_none(), "an installer is running already");
--                         if !withhold(&mut transfer, &mut app, now)? {
--@@ -2735,41 +2228,13 @@
--                     // The decrypt page shows meanwhile that the work is
--                     // under way, and takes nothing more until it is done.
--                     Effect::OpenData => {
---                        ensure!(decryptor.is_none() && pending_open.is_none(), "the data partition is being opened already");
---                        note("opening the data partition, as the page asked")?;
---                        // The screen is drawn before the phone's own parts are
---                        // up, and the key service this needs is one of them: the
---                        // waiting is done a turn of the loop at a time, so that
---                        // the page keeps up its ring and its bar meanwhile.
---                        match crate::prepared() {
---                            true => decryptor = Some(Decryptor::start(decrypt::Job::Open)?),
---                            false => {
---                                note("the phone's own parts are not up yet; the opening waits for them")?;
---                                pending_open = Some(decrypt::Job::Open);
---                            }
---                        }
--+                        ensure!(decryptor.is_none(), "the data partition is being opened already");
--+                        decryptor = Some(Decryptor::start(decrypt::Job::Open)?);
--                     }
--                     Effect::Unlock { user, code } => {
---                        ensure!(decryptor.is_none() && pending_open.is_none(), "the data partition is being opened already");
---                        let credential = code.into_bytes();
---                        last_credential = Some(credential.clone());
---                        attempt_was_remembered = false;
---                        let job = decrypt::Job::Unlock { closed: closed.clone(), user, credential };
---                        match crate::prepared() {
---                            true => decryptor = Some(Decryptor::start(job)?),
---                            false => {
---                                note("the phone's own parts are not up yet; the unlock waits for them")?;
---                                pending_open = Some(job);
---                            }
---                        }
---                    }
---                    Effect::Remember(on) => {
---                        if !on {
---                            remembered = None;
---                            if let Err(e) = remember::forget() {
---                                skyward_sys::kmsg(&format!("the kept screen lock was not forgotten: {e:#}"))?;
---                            }
---                        }
--+                        ensure!(decryptor.is_none(), "the data partition is being opened already");
--+                        let job = decrypt::Job::Unlock { closed: closed.clone(), user, credential: code.into_bytes() };
--+                        decryptor = Some(Decryptor::start(job)?);
--                     }
--                     Effect::ReadDir(folder) => list(&mut app, folder)?,
--                     Effect::ReadPlace(place, folder) => list_place(&mut app, place, folder)?,
--@@ -2815,55 +2280,6 @@
--                     Effect::StopJob => worker.as_ref().context("there is no work on files to stop")?.stop(),
--                     // Rules kept on a partition that is not mounted are the
--                     // page's to report, with what to do first.
---                    Effect::AvbRead => {
---                        let read = (|| -> anyhow::Result<(bool, bool)> {
---                            let v = avbctl::read(avbctl::Switch::Verity)?;
---                            let w = avbctl::read(avbctl::Switch::Verification)?;
---                            Ok((v, w))
---                        })();
---                        app.avb_ready(read.map_err(|e| format!("{e:#}")));
---                    }
---                    Effect::AvbKeep => {
---                        // 内部存储：/sdcard 要等 data 解开才在，写不进去就把原因说出来。
---                        let kept = (|| -> anyhow::Result<u64> {
---                            let copy = avbctl::dump()?;
---                            std::fs::write(VBMETA_KEPT, &copy.bytes)
---                                .with_context(|| format!("write {VBMETA_KEPT}"))?;
---                            Ok(copy.rollback_index)
---                        })();
---                        let said = match kept {
---                            Ok(index) => format!("vbmeta 已备份到 {VBMETA_KEPT}（回滚索引 {index}）"),
---                            Err(e) => format!("备份失败：{e:#}"),
---                        };
---                        let _ = skyward_sys::kmsg(&said);
---                        app.avb_ready(Err(said));
---                    }
---                    Effect::AvbGive => {
---                        let wrote = (|| -> anyhow::Result<u64> {
---                            let bytes = std::fs::read(VBMETA_KEPT)
---                                .with_context(|| format!("read {VBMETA_KEPT}"))?;
---                            anyhow::ensure!(bytes.len() >= 120, "{VBMETA_KEPT} is too short to be a vbmeta image");
---                            let copy = avbctl::Copy { rollback_index: avbctl::rollback(&bytes), bytes };
---                            avbctl::restore(&copy)?;
---                            Ok(copy.rollback_index)
---                        })();
---                        let said = match wrote {
---                            Ok(index) => format!("vbmeta 已写回（回滚索引 {index}）"),
---                            Err(e) => format!("写回失败：{e:#}"),
---                        };
---                        let _ = skyward_sys::kmsg(&said);
---                        app.avb_ready(Err(said));
---                    }
---                    Effect::AvbSet(verity, verification) => {
---                        let read = (|| -> anyhow::Result<(bool, bool)> {
---                            avbctl::turn(avbctl::Switch::Verity, verity)?;
---                            avbctl::turn(avbctl::Switch::Verification, verification)?;
---                            let v = avbctl::read(avbctl::Switch::Verity)?;
---                            let w = avbctl::read(avbctl::Switch::Verification)?;
---                            Ok((v, w))
---                        })();
---                        app.avb_ready(read.map_err(|e| format!("{e:#}")));
---                    }
--                     Effect::Relabel => {
--                         ensure!(relabeler.is_none(), "relabeling is under way already");
--                         let slot = skyward_vab::current_slot()?.context("not an A/B phone")?;
--@@ -2983,33 +2399,11 @@
--                         merger = Some(merge::Merger::start(slot, true)?);
--                     }
--                     Effect::Wlan(on) => wlan_worker(&wlan)?.send(if on { wlan::Command::On } else { wlan::Command::Off }),
---                    Effect::WlanAuto(on) => {
---                        wlanmem::set_auto(on)?;
---                        skyward_sys::kmsg(if on {
---                            "the WLAN opens as the recovery starts"
---                        } else {
---                            "the WLAN stays off as the recovery starts"
---                        })?;
---                    }
---                    Effect::WlanKeep(on) => {
---                        wlanmem::set_keep(on)?;
---                        if !on {
---                            wlan_saved = None;
---                        }
---                        skyward_sys::kmsg(if on {
---                            "the WLAN password is kept once a network is joined"
---                        } else {
---                            "the WLAN password kept is forgotten"
---                        })?;
---                    }
--                     Effect::ScanWlan => {
--                         scanned_at = Instant::now();
--                         wlan_worker(&wlan)?.send(wlan::Command::Scan);
--                     }
--                     Effect::JoinWlan { ssid, name, security, password } => {
---                        wlan_joined = true;
---                        wlan_kept = false;
---                        wlan_password = Some(password.0.clone());
--                         wlan_worker(&wlan)?.send(wlan::Command::Join { ssid, name, security, password: password.0 })
--                     }
--                     Effect::LeaveWlan => wlan_worker(&wlan)?.send(wlan::Command::Leave),
--@@ -3042,8 +2436,7 @@
--                     Effect::CheckSkyward => {
--                         ensure!(skyward_checker.is_none(), "GitHub is being asked already");
--                         let probe = cfg.wlan.as_ref().context("the phone's WLAN is not brought up")?.probe.clone();
---                        let at = cfg.update.as_ref().and_then(|u| u.skyward.clone()).unwrap_or_else(|| skyward_net::github::LATEST.to_string());
---                        let task = updates::Task::CheckSkyward { probe, codename: cfg.device.codename.clone(), at };
--+                        let task = updates::Task::CheckSkyward { probe, codename: cfg.device.codename.clone() };
--                         skyward_checker = Some(updates::Worker::start(task, servers.clone())?);
--                     }
--                     // The zip goes into the recovery's own folder, which is
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/updates.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/updates.rs
---- 临时/up/src031/crates/skyward/src/updates.rs	2026-11-14 00:13:16.634607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/updates.rs	2026-11-14 10:52:17.354999878 +0000
+diff -ruN a/crates/skyward/src/updates.rs b/crates/skyward/src/updates.rs
+--- a/crates/skyward/src/updates.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward/src/updates.rs	2026-11-14 10:52:17.000000000 +0000
 @@ -12,6 +12,7 @@
  use skyward_net::reach::{self, Reach};
  use skyward_net::release::{self, Installed, Release, Unanswered};
@@ -3426,119 +2472,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
          let until = Instant::now() + BETWEEN;
          while Instant::now() < until {
              if stop.load(Ordering::Relaxed) {
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/updates.rs.rej 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/updates.rs.rej
---- 临时/up/src031/crates/skyward/src/updates.rs.rej	2026-11-14 00:13:16.634607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/updates.rs.rej	1970-01-01 00:00:00.000000000 +0000
-@@ -1,106 +0,0 @@
----- crates/skyward/src/updates.rs	2026-11-08 18:17:31.000000000 +0800
--+++ crates/skyward/src/updates.rs	2026-11-12 23:19:01.377999764 +0800
--@@ -15,6 +15,7 @@
-- use std::os::fd::{AsRawFd, FromRawFd, OwnedFd, RawFd};
-- use std::path::{Path, PathBuf};
-- use std::sync::atomic::{AtomicBool, Ordering};
--+use std::io::Read;
-- use std::sync::mpsc::{self, Receiver};
-- use std::sync::{Arc, Mutex};
-- use std::thread::{self, JoinHandle};
--@@ -62,7 +83,7 @@
--     /// Ask GitHub for Skyward's newest release and its zip for the phone
--     /// `codename` names; where that fails, `probe` says whether the network
--     /// is why.
---    CheckSkyward { probe: String, codename: String },
--+    CheckSkyward { probe: String, codename: String, at: String },
--     /// Download `build` to `path`, check that its image is Skyward for the
--     /// phone `codename` names, and write the image into the recovery
--     /// partitions of the slot that starts next and of any other slot that
--@@ -168,10 +189,11 @@
--                         let end = fetch(&servers, release.urls.clone(), &sum, &release.name, &path, &stopping, &using, &tell, &mut refused);
--                         tell(Event::Ended(end));
--                     }
---                    Task::CheckSkyward { probe, codename } => {
--+                    Task::CheckSkyward { probe, codename, at } => {
--                         let a = http::agent(servers.clone());
--                         *using.lock().expect("the agent is not held by a thread that panicked") = Some(a.clone());
---                        let answer = github::ask(&a, &codename, skyward_info::VERSION).map_err(|e| unanswered(&e, github::LATEST, &probe, &servers));
--+                        let address = if at.is_empty() { github::LATEST } else { at.as_str() };
--+                        let answer = github::ask(&a, address, &codename, skyward_info::VERSION).map_err(|e| unanswered(&e, address, &probe, &servers));
--                         tell(Event::SkywardChecked(answer));
--                     }
--                     // GitHub's API hands the zip out at a short-lived address
--@@ -354,10 +437,15 @@
--     tell: &dyn Fn(Event),
--     refused: &mut dyn FnMut(&ureq::Agent) -> Again,
-- ) -> End {
--+    // The fastest of the addresses answers first; the rest stay behind it for a
--+    // source that stops sending.
--+    let mut urls = by_speed(&http::agent(servers.clone()), urls);
--     let mut url = 0;
--     let mut failed = 0;
--     let mut samples: Vec<(Instant, u64)> = Vec::new();
--     let mut told = Instant::now() - PROGRESS_EVERY;
--+    let mut misses = vec![0u8; urls.len()];
--+    let mut left_out = vec![false; urls.len()];
--     loop {
--         if stop.load(Ordering::Relaxed) {
--             return End::Stopped;
--@@ -366,14 +454,19 @@
--         *using.lock().expect("the agent is not held by a thread that panicked") = Some(a.clone());
--         let mut came = None::<u64>;
--         let mut gained = false;
--+        let mut seen = 0u64;
--         let mut last = None;
--+        let mut last_gain = Instant::now();
--+        let slow = AtomicBool::new(false);
--         let mut progress = |p: Progress| {
--             if let Progress::Downloading { done, .. } = p {
--                 let now = Instant::now();
--                 if came.is_some_and(|before| done > before) {
--                     gained = true;
--+                    last_gain = now;
--                 }
--                 came = Some(done);
--+                seen = seen.max(done);
--                 samples.push((now, done));
--                 samples.retain(|(at, _)| now.duration_since(*at) <= RATE_OVER);
--             }
--@@ -385,9 +478,15 @@
--                 told = Instant::now();
--                 tell(Event::Progress(p, rate));
--             }
--+            // A source that has sent nothing for a while has stalled; one
--+            // that is merely slow is left to it, since the next address may be
--+            // slower still, or not reachable at all.
--+            if seen > JUDGE_AFTER && last_gain.elapsed() >= STALL {
--+                slow.store(true, Ordering::Relaxed);
--+            }
--             last = Some((p, rate));
--         };
---        let result = download::fetch(&a, &urls[url], path, sum, stop, &mut progress);
--+        let result = download::fetch(&a, &urls[url], path, sum, stop, &slow, &mut progress);
--         // How far it came shows in the end, whatever stopped it.
--         if let Some((p, rate)) = last {
--             tell(Event::Progress(p, rate));
--@@ -433,10 +547,18 @@
--             }
--         }
--         failed = if gained { 1 } else { failed + 1 };
--+        if gained {
--+            misses[url] = 0;
--+        } else {
--+            misses[url] = misses[url].saturating_add(1);
--+            if misses[url] >= MISSES && urls.len() > 1 {
--+                left_out[url] = true;
--+            }
--+        }
--         if failed >= TRIES {
--             return End::Failed(Failure::Other(format!("{e:#}")));
--         }
---        url = (url + 1) % urls.len();
--+        url = next_source(url, &mut left_out, &mut misses);
--         let until = Instant::now() + BETWEEN;
--         while Instant::now() < until {
--             if stop.load(Ordering::Relaxed) {
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/wlan.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/wlan.rs
---- 临时/up/src031/crates/skyward/src/wlan.rs	2026-11-14 00:13:16.634607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/wlan.rs	2026-11-14 15:04:51.726999934 +0000
+diff -ruN a/crates/skyward/src/wlan.rs b/crates/skyward/src/wlan.rs
+--- a/crates/skyward/src/wlan.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward/src/wlan.rs	2026-11-14 15:04:51.000000000 +0000
 @@ -55,6 +55,10 @@
  /// goes.
  const TRAFFIC: Duration = Duration::from_secs(1);
@@ -3632,9 +2568,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
          }
          if Instant::now() >= until {
              end(&mut child, None);
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward/src/wlanmem.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/wlanmem.rs
---- 临时/up/src031/crates/skyward/src/wlanmem.rs	1970-01-01 00:00:00.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward/src/wlanmem.rs	2026-11-14 11:41:48.346999927 +0000
+diff -ruN a/crates/skyward/src/wlanmem.rs b/crates/skyward/src/wlanmem.rs
+--- a/crates/skyward/src/wlanmem.rs	1970-01-01 00:00:00.000000000 +0000
++++ b/crates/skyward/src/wlanmem.rs	2026-11-14 11:41:48.000000000 +0000
 @@ -0,0 +1,183 @@
 +//! The WLAN a user chose to have kept: whether it is opened as the recovery
 +//! starts, whether the password of the network joined last is kept, and that
@@ -3819,9 +2755,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
 +        assert_eq!(render(&kept), "auto=1\nkeep=0\n");
 +    }
 +}
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-config/src/lib.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-config/src/lib.rs
---- 临时/up/src031/crates/skyward-config/src/lib.rs	2026-11-14 00:13:16.634607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-config/src/lib.rs	2026-11-14 09:40:01.820839732 +0000
+diff -ruN a/crates/skyward-config/src/lib.rs b/crates/skyward-config/src/lib.rs
+--- a/crates/skyward-config/src/lib.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward-config/src/lib.rs	2026-11-14 09:40:01.000000000 +0000
 @@ -41,6 +41,18 @@
      }
  }
@@ -3851,9 +2787,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
      #[serde(default)]
      pub wipe: Wipe,
      #[serde(default)]
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-crypto/src/data.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-crypto/src/data.rs
---- 临时/up/src031/crates/skyward-crypto/src/data.rs	2026-11-14 00:13:16.634607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-crypto/src/data.rs	2026-11-14 15:17:26.022999763 +0000
+diff -ruN a/crates/skyward-crypto/src/data.rs b/crates/skyward-crypto/src/data.rs
+--- a/crates/skyward-crypto/src/data.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward-crypto/src/data.rs	2026-11-14 15:17:26.000000000 +0000
 @@ -32,6 +32,12 @@
  /// The phone's owner, the first of its users.
  const OWNER: u32 = 0;
@@ -4024,28 +2960,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
  }
  
  /// Which of the secure world's slots a user's enrolments sit in. What the
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-crypto/src/data.rs.rej 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-crypto/src/data.rs.rej
---- 临时/up/src031/crates/skyward-crypto/src/data.rs.rej	2026-11-14 00:13:16.634607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-crypto/src/data.rs.rej	1970-01-01 00:00:00.000000000 +0000
-@@ -1,15 +0,0 @@
----- crates/skyward-crypto/src/data.rs	2026-11-12 21:21:22.578256706 +0800
--+++ crates/skyward-crypto/src/data.rs	2026-11-08 18:17:31.000000000 +0800
--@@ -32,12 +8,6 @@
-- /// The phone's owner, the first of its users.
-- const OWNER: u32 = 0;
-- 
---/// The second space HyperOS keeps: a user of its own, whose files are kept
---/// behind the owner's credential. Opening them is a second unlock, behind the
---/// one the page asked for, and one that can leave the page waiting; the
---/// recovery leaves them closed.
---const SECOND_SPACE: u32 = 999;
---
-- /// The key is in a directory of this name under the one the phone names.
-- const KEY_DIR: &str = "key";
-- 
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-crypto/src/encryption.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-crypto/src/encryption.rs
---- 临时/up/src031/crates/skyward-crypto/src/encryption.rs	2026-11-13 23:40:53.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-crypto/src/encryption.rs	2026-11-14 00:18:03.386607321 +0000
+diff -ruN a/crates/skyward-crypto/src/encryption.rs b/crates/skyward-crypto/src/encryption.rs
+--- a/crates/skyward-crypto/src/encryption.rs	2026-11-13 23:40:53.000000000 +0000
++++ b/crates/skyward-crypto/src/encryption.rs	2026-11-14 00:18:03.000000000 +0000
 @@ -28,13 +28,21 @@
  impl Encryption {
      /// Read what an entry of the phone's own table says.
@@ -4075,9 +2992,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
      }
  }
  
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-info/build.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-info/build.rs
---- 临时/up/src031/crates/skyward-info/build.rs	1970-01-01 00:00:00.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-info/build.rs	2026-11-14 10:52:17.310999878 +0000
+diff -ruN a/crates/skyward-info/build.rs b/crates/skyward-info/build.rs
+--- a/crates/skyward-info/build.rs	1970-01-01 00:00:00.000000000 +0000
++++ b/crates/skyward-info/build.rs	2026-11-14 10:52:17.000000000 +0000
 @@ -0,0 +1,6 @@
 +//! The release a build names is baked into the library, and a change of it has
 +//! to rebuild it: cargo does not look at the environment by itself.
@@ -4085,9 +3002,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
 +fn main() {
 +    println!("cargo:rerun-if-env-changed=SKYWARD_RELEASE");
 +}
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-info/src/lib.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-info/src/lib.rs
---- 临时/up/src031/crates/skyward-info/src/lib.rs	2026-11-14 00:13:16.634607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-info/src/lib.rs	2026-11-15 00:24:05.291999974 +0000
+diff -ruN a/crates/skyward-info/src/lib.rs b/crates/skyward-info/src/lib.rs
+--- a/crates/skyward-info/src/lib.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward-info/src/lib.rs	2026-11-15 00:24:05.000000000 +0000
 @@ -14,6 +14,21 @@
  /// Version of this build, shown on the About page.
  pub const VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -4110,9 +3027,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
  const CPU: &str = "/sys/devices/system/cpu";
  const POWER_SUPPLY: &str = "/sys/class/power_supply";
  const SYS_BLOCK: &str = "/sys/class/block";
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-install/src/commands/avbctl.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-install/src/commands/avbctl.rs
---- 临时/up/src031/crates/skyward-install/src/commands/avbctl.rs	2026-11-14 00:13:16.634607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-install/src/commands/avbctl.rs	2026-11-14 15:25:30.050999578 +0000
+diff -ruN a/crates/skyward-install/src/commands/avbctl.rs b/crates/skyward-install/src/commands/avbctl.rs
+--- a/crates/skyward-install/src/commands/avbctl.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward-install/src/commands/avbctl.rs	2026-11-14 15:25:30.000000000 +0000
 @@ -348,3 +348,103 @@
          }
      }
@@ -4217,9 +3134,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
 +    );
 +    set(&phone_of(&suffix, locked), which.check(), on).map_err(|e| anyhow::anyhow!("{e}"))
 +}
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-install/src/commands.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-install/src/commands.rs
---- 临时/up/src031/crates/skyward-install/src/commands.rs	2026-11-14 00:13:16.634607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-install/src/commands.rs	2026-11-14 15:25:30.050999578 +0000
+diff -ruN a/crates/skyward-install/src/commands.rs b/crates/skyward-install/src/commands.rs
+--- a/crates/skyward-install/src/commands.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward-install/src/commands.rs	2026-11-14 15:25:30.000000000 +0000
 @@ -13,7 +13,7 @@
  use std::ffi::{OsStr, OsString};
  use std::io::{self, Read, Write};
@@ -4229,9 +3146,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
  mod resetprop;
  mod sevenzip;
  mod unzip;
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-net/src/github.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-net/src/github.rs
---- 临时/up/src031/crates/skyward-net/src/github.rs	2026-11-14 00:13:16.634607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-net/src/github.rs	2026-11-14 23:28:23.668999954 +0000
+diff -ruN a/crates/skyward-net/src/github.rs b/crates/skyward-net/src/github.rs
+--- a/crates/skyward-net/src/github.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward-net/src/github.rs	2026-11-14 23:28:23.000000000 +0000
 @@ -5,7 +5,11 @@
  use serde::Deserialize;
  
@@ -4294,9 +3211,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
      }
  
      /// A server on this computer that answers one request with `answer`,
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-net/src/http.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-net/src/http.rs
---- 临时/up/src031/crates/skyward-net/src/http.rs	2026-11-13 23:40:53.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-net/src/http.rs	2026-11-14 00:23:41.972017028 +0000
+diff -ruN a/crates/skyward-net/src/http.rs b/crates/skyward-net/src/http.rs
+--- a/crates/skyward-net/src/http.rs	2026-11-13 23:40:53.000000000 +0000
++++ b/crates/skyward-net/src/http.rs	2026-11-14 00:23:41.000000000 +0000
 @@ -40,6 +40,27 @@
      }
  }
@@ -4325,9 +3242,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
  /// An agent that looks names up in `servers`, and gives a server's answer
  /// whatever its status: the caller says what a status means.
  pub fn agent(servers: Servers) -> ureq::Agent {
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-net/src/iface.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-net/src/iface.rs
---- 临时/up/src031/crates/skyward-net/src/iface.rs	2026-11-14 00:13:16.634607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-net/src/iface.rs	2026-11-14 11:51:40.606999915 +0000
+diff -ruN a/crates/skyward-net/src/iface.rs b/crates/skyward-net/src/iface.rs
+--- a/crates/skyward-net/src/iface.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward-net/src/iface.rs	2026-11-14 11:51:40.000000000 +0000
 @@ -77,6 +77,11 @@
  }
  
@@ -4340,9 +3257,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
  pub fn set_up(interface: &str, up: bool) -> Result<()> {
      let fd = socket()?;
      let mut r = request(interface)?;
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-preview/src/main.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-preview/src/main.rs
---- 临时/up/src031/crates/skyward-preview/src/main.rs	2026-11-14 00:13:16.638607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-preview/src/main.rs	2026-11-14 11:21:07.582999813 +0000
+diff -ruN a/crates/skyward-preview/src/main.rs b/crates/skyward-preview/src/main.rs
+--- a/crates/skyward-preview/src/main.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward-preview/src/main.rs	2026-11-14 11:21:07.000000000 +0000
 @@ -959,7 +959,13 @@
              app.file_progress((0, 18_000), (0, 1));
              app.file_job_ended(JobEnd::Failed("make /sdcard/Download/skyward.log: Read-only file system (os error 30)".into()), 0);
@@ -4358,9 +3275,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
          ("86-decrypt-light-digits", Screen::Decrypt, false, &|app| {
              app.data_waiting(Some((0, Keys::Digits)));
              app.state.code = "123".into();
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-sys/src/lib.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-sys/src/lib.rs
---- 临时/up/src031/crates/skyward-sys/src/lib.rs	2026-11-13 23:40:53.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-sys/src/lib.rs	2026-11-14 14:33:29.889999958 +0000
+diff -ruN a/crates/skyward-sys/src/lib.rs b/crates/skyward-sys/src/lib.rs
+--- a/crates/skyward-sys/src/lib.rs	2026-11-13 23:40:53.000000000 +0000
++++ b/crates/skyward-sys/src/lib.rs	2026-11-14 14:33:29.000000000 +0000
 @@ -212,7 +212,56 @@
  /// the seconds since the phone started as the kernel log stamps it. The
  /// file takes the text first and whole; the kernel takes each of its lines
@@ -4418,9 +3335,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
      let kept = match KEPT.get() {
          Some(kept) => {
              let mut kept = kept.lock().expect("nothing panics while writing the log");
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-sys/src/usb.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-sys/src/usb.rs
---- 临时/up/src031/crates/skyward-sys/src/usb.rs	2026-11-14 00:13:16.638607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-sys/src/usb.rs	2026-11-15 00:04:39.128633761 +0000
+diff -ruN a/crates/skyward-sys/src/usb.rs b/crates/skyward-sys/src/usb.rs
+--- a/crates/skyward-sys/src/usb.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward-sys/src/usb.rs	2026-11-15 00:04:39.000000000 +0000
 @@ -3,13 +3,28 @@
  //! beside it while file transfer is on.
  
@@ -4451,9 +3368,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
  /// What the port offers while nothing else has it.
  pub fn resting() -> &'static str {
      if MTP.load(Ordering::Relaxed) {
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/Cargo.toml 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/Cargo.toml
---- 临时/up/src031/crates/skyward-ui/Cargo.toml	2026-11-14 00:13:16.638607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/Cargo.toml	2026-11-14 15:33:32.390999394 +0000
+diff -ruN a/crates/skyward-ui/Cargo.toml b/crates/skyward-ui/Cargo.toml
+--- a/crates/skyward-ui/Cargo.toml	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward-ui/Cargo.toml	2026-11-14 15:33:32.000000000 +0000
 @@ -5,6 +5,7 @@
  license.workspace = true
  
@@ -4462,9 +3379,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
  anyhow = { workspace = true }
  ab_glyph = "0.2.32"
  # The stock status bar's outlines are filled as glyphs are.
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/src/app/act.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/act.rs
---- 临时/up/src031/crates/skyward-ui/src/app/act.rs	2026-11-13 23:40:53.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/act.rs	2026-11-14 23:57:14.260999929 +0000
+diff -ruN a/crates/skyward-ui/src/app/act.rs b/crates/skyward-ui/src/app/act.rs
+--- a/crates/skyward-ui/src/app/act.rs	2026-11-13 23:40:53.000000000 +0000
++++ b/crates/skyward-ui/src/app/act.rs	2026-11-14 23:57:14.000000000 +0000
 @@ -8,6 +8,11 @@
          let l = self.state.lang;
          match action {
@@ -4635,9 +3552,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
              Confirm::Reboot => fx.push(Effect::Reboot(TARGETS[self.state.reboot])),
              Confirm::Wipe => {
                  let chosen: Vec<Wipe> = WIPES.iter().zip(self.state.wipe).filter(|(_, on)| *on).map(|(&w, _)| w).collect();
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/src/app/decrypt.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/decrypt.rs
---- 临时/up/src031/crates/skyward-ui/src/app/decrypt.rs	2026-11-13 23:40:53.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/decrypt.rs	2026-11-14 11:07:11.046999865 +0000
+diff -ruN a/crates/skyward-ui/src/app/decrypt.rs b/crates/skyward-ui/src/app/decrypt.rs
+--- a/crates/skyward-ui/src/app/decrypt.rs	2026-11-13 23:40:53.000000000 +0000
++++ b/crates/skyward-ui/src/app/decrypt.rs	2026-11-14 11:07:11.000000000 +0000
 @@ -69,6 +69,24 @@
          self.refresh();
      }
@@ -4663,9 +3580,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
      /// The data partition did not open, and why.
      pub fn data_failed(&mut self, why: String) {
          self.state.data = Data::Failed(why);
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/src/app/draw.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/draw.rs
---- 临时/up/src031/crates/skyward-ui/src/app/draw.rs	2026-11-13 23:40:53.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/draw.rs	2026-11-15 00:13:37.332235328 +0000
+diff -ruN a/crates/skyward-ui/src/app/draw.rs b/crates/skyward-ui/src/app/draw.rs
+--- a/crates/skyward-ui/src/app/draw.rs	2026-11-13 23:40:53.000000000 +0000
++++ b/crates/skyward-ui/src/app/draw.rs	2026-11-15 00:13:37.000000000 +0000
 @@ -3,6 +3,7 @@
  //! over the page.
  
@@ -4855,9 +3772,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
      /// The charging screen, `level` of the way over the page drawn on `out`.
      fn compose_charging(&mut self, out: &mut Canvas, f: &Fonts, info: &DeviceInfo, level: f32, now: u64) {
          let battery = info.battery.as_ref().expect("a cable went in on a phone whose battery is read");
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/src/app/input.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/input.rs
---- 临时/up/src031/crates/skyward-ui/src/app/input.rs	2026-11-13 23:40:53.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/input.rs	2026-11-14 23:22:29.104999957 +0000
+diff -ruN a/crates/skyward-ui/src/app/input.rs b/crates/skyward-ui/src/app/input.rs
+--- a/crates/skyward-ui/src/app/input.rs	2026-11-13 23:40:53.000000000 +0000
++++ b/crates/skyward-ui/src/app/input.rs	2026-11-14 23:22:29.000000000 +0000
 @@ -5,9 +5,65 @@
  
  impl App {
@@ -5084,9 +4001,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
          let mut fx = match self.chord {
              Some((first, _)) if first == key => self.let_chord_go(now),
              _ => Vec::new(),
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/src/app/manager.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/manager.rs
---- 临时/up/src031/crates/skyward-ui/src/app/manager.rs	2026-11-13 23:40:53.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/manager.rs	2026-11-14 15:42:36.878999890 +0000
+diff -ruN a/crates/skyward-ui/src/app/manager.rs b/crates/skyward-ui/src/app/manager.rs
+--- a/crates/skyward-ui/src/app/manager.rs	2026-11-13 23:40:53.000000000 +0000
++++ b/crates/skyward-ui/src/app/manager.rs	2026-11-14 15:42:36.000000000 +0000
 @@ -88,6 +88,44 @@
      pub stopping: bool,
  }
@@ -5164,9 +4081,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
          let shown = self.state.folder_mut(screen);
          shown.path = folder;
          shown.entries = files;
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/src/app/mod.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/mod.rs
---- 临时/up/src031/crates/skyward-ui/src/app/mod.rs	2026-11-13 23:40:53.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/mod.rs	2026-11-14 23:56:34.564999944 +0000
+diff -ruN a/crates/skyward-ui/src/app/mod.rs b/crates/skyward-ui/src/app/mod.rs
+--- a/crates/skyward-ui/src/app/mod.rs	2026-11-13 23:40:53.000000000 +0000
++++ b/crates/skyward-ui/src/app/mod.rs	2026-11-14 23:56:34.000000000 +0000
 @@ -142,6 +142,15 @@
      /// Where an update the system installed stands, and merging it into
      /// the slot it went to.
@@ -5471,9 +4388,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
          if self.chord.is_some_and(|(_, at)| now >= at + CHORD_MS) {
              fx.extend(self.let_chord_go(now));
          }
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/src/app/power.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/power.rs
---- 临时/up/src031/crates/skyward-ui/src/app/power.rs	2026-11-13 23:40:53.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/power.rs	2026-11-14 23:12:43.919999923 +0000
+diff -ruN a/crates/skyward-ui/src/app/power.rs b/crates/skyward-ui/src/app/power.rs
+--- a/crates/skyward-ui/src/app/power.rs	2026-11-13 23:40:53.000000000 +0000
++++ b/crates/skyward-ui/src/app/power.rs	2026-11-14 23:12:43.000000000 +0000
 @@ -94,6 +94,16 @@
      /// now, then the panel goes off. A finger on the glass lets go of what
      /// it held, and the page stops where it is.
@@ -5491,9 +4408,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
          self.darkening = self.panel(now);
          self.curtain.set(false, now);
          self.display_on = false;
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/src/app/prefs.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/prefs.rs
---- 临时/up/src031/crates/skyward-ui/src/app/prefs.rs	2026-11-13 23:40:53.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/prefs.rs	2026-11-14 14:17:19.470999885 +0000
+diff -ruN a/crates/skyward-ui/src/app/prefs.rs b/crates/skyward-ui/src/app/prefs.rs
+--- a/crates/skyward-ui/src/app/prefs.rs	2026-11-13 23:40:53.000000000 +0000
++++ b/crates/skyward-ui/src/app/prefs.rs	2026-11-14 14:17:19.000000000 +0000
 @@ -26,7 +26,14 @@
      /// Write Skyward back into the recovery partitions an install writes
      /// over.
@@ -5509,9 +4426,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
      /// Show the password typed rather than a dot for each character.
      ShowPassword,
  }
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/src/app/state.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/state.rs
---- 临时/up/src031/crates/skyward-ui/src/app/state.rs	2026-11-13 23:40:53.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/app/state.rs	2026-11-15 00:13:37.332235328 +0000
+diff -ruN a/crates/skyward-ui/src/app/state.rs b/crates/skyward-ui/src/app/state.rs
+--- a/crates/skyward-ui/src/app/state.rs	2026-11-13 23:40:53.000000000 +0000
++++ b/crates/skyward-ui/src/app/state.rs	2026-11-15 00:13:37.000000000 +0000
 @@ -2,6 +2,34 @@
  
  use super::*;
@@ -5644,9 +4561,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
              joining: None,
              details: None,
              adding: None,
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/src/files.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/files.rs
---- 临时/up/src031/crates/skyward-ui/src/files.rs	2026-11-14 00:13:16.638607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/files.rs	2026-11-14 23:00:48.494662836 +0000
+diff -ruN a/crates/skyward-ui/src/files.rs b/crates/skyward-ui/src/files.rs
+--- a/crates/skyward-ui/src/files.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward-ui/src/files.rs	2026-11-14 23:00:48.000000000 +0000
 @@ -443,7 +443,8 @@
  pub fn strip(t: &Theme, f: &Fonts, top: &str, folder: &str) -> Pinned {
      let m = &t.m;
@@ -5691,9 +4608,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
  /// What the page says in place of the list, centred below the path, with
  /// the reason under it when there is one.
  pub fn note(c: &mut Canvas, t: &Theme, f: &Fonts, title: &str, why: Option<&str>) {
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/src/lib.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/lib.rs
---- 临时/up/src031/crates/skyward-ui/src/lib.rs	2026-11-14 00:13:16.638607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/lib.rs	2026-11-14 10:42:03.573999910 +0000
+diff -ruN a/crates/skyward-ui/src/lib.rs b/crates/skyward-ui/src/lib.rs
+--- a/crates/skyward-ui/src/lib.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward-ui/src/lib.rs	2026-11-14 10:42:03.000000000 +0000
 @@ -14,6 +14,7 @@
  pub mod lang;
  pub mod motion;
@@ -5702,9 +4619,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
  pub mod search;
  pub mod settings;
  pub mod sprite;
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/src/pages.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/pages.rs
---- 临时/up/src031/crates/skyward-ui/src/pages.rs	2026-11-14 00:13:16.642607431 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/pages.rs	2026-11-14 23:56:34.564999944 +0000
+diff -ruN a/crates/skyward-ui/src/pages.rs b/crates/skyward-ui/src/pages.rs
+--- a/crates/skyward-ui/src/pages.rs	2026-11-14 00:13:16.000000000 +0000
++++ b/crates/skyward-ui/src/pages.rs	2026-11-14 23:56:34.000000000 +0000
 @@ -1,7 +1,8 @@
  use crate::app::{
      Action, BackupAt, BackupEnd, BackupJob, Check, ClashChoice, Confirm, Damage, Data, Dock, DownloadEnd, EraseStop, Field, FileKind,
@@ -6285,9 +5202,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
  }
  
  const CANCEL: Text = ["取消", "取消", "Cancel"];
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/crates/skyward-ui/src/progress.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/progress.rs
---- 临时/up/src031/crates/skyward-ui/src/progress.rs	1970-01-01 00:00:00.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/crates/skyward-ui/src/progress.rs	2026-11-14 10:40:32.085999944 +0000
+diff -ruN a/crates/skyward-ui/src/progress.rs b/crates/skyward-ui/src/progress.rs
+--- a/crates/skyward-ui/src/progress.rs	1970-01-01 00:00:00.000000000 +0000
++++ b/crates/skyward-ui/src/progress.rs	2026-11-14 10:40:32.000000000 +0000
 @@ -0,0 +1,60 @@
 +//! How far the phone's parts have come up, so a page can say what it is
 +//! waiting for instead of standing still without a word. The recovery draws
@@ -6349,9 +5266,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
 +pub fn done() -> f32 {
 +    (stage() as f32 / READY as f32).clamp(0.0, 1.0)
 +}
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/vendor/qrcodegen/Cargo.lock 项目/第三方REC-pudding/构建/skyward-0.3.1/vendor/qrcodegen/Cargo.lock
---- 临时/up/src031/vendor/qrcodegen/Cargo.lock	1970-01-01 00:00:00.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/vendor/qrcodegen/Cargo.lock	2026-11-14 15:15:45.206999801 +0000
+diff -ruN a/vendor/qrcodegen/Cargo.lock b/vendor/qrcodegen/Cargo.lock
+--- a/vendor/qrcodegen/Cargo.lock	1970-01-01 00:00:00.000000000 +0000
++++ b/vendor/qrcodegen/Cargo.lock	2026-11-14 15:15:45.000000000 +0000
 @@ -0,0 +1,7 @@
 +# This file is automatically @generated by Cargo.
 +# It is not intended for manual editing.
@@ -6360,9 +5277,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
 +[[package]]
 +name = "qrcodegen"
 +version = "1.8.0"
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/vendor/qrcodegen/Cargo.toml 项目/第三方REC-pudding/构建/skyward-0.3.1/vendor/qrcodegen/Cargo.toml
---- 临时/up/src031/vendor/qrcodegen/Cargo.toml	1970-01-01 00:00:00.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/vendor/qrcodegen/Cargo.toml	2026-11-14 15:15:45.206999801 +0000
+diff -ruN a/vendor/qrcodegen/Cargo.toml b/vendor/qrcodegen/Cargo.toml
+--- a/vendor/qrcodegen/Cargo.toml	1970-01-01 00:00:00.000000000 +0000
++++ b/vendor/qrcodegen/Cargo.toml	2026-11-14 15:15:45.000000000 +0000
 @@ -0,0 +1,23 @@
 +# THIS FILE IS AUTOMATICALLY GENERATED BY CARGO
 +#
@@ -6387,25 +5304,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
 +categories = ["encoding", "multimedia::images"]
 +license = "MIT"
 +repository = "https://github.com/nayuki/QR-Code-generator"
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/vendor/qrcodegen/Cargo.toml.orig 项目/第三方REC-pudding/构建/skyward-0.3.1/vendor/qrcodegen/Cargo.toml.orig
---- 临时/up/src031/vendor/qrcodegen/Cargo.toml.orig	1970-01-01 00:00:00.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/vendor/qrcodegen/Cargo.toml.orig	2026-11-14 15:15:45.206999801 +0000
-@@ -0,0 +1,12 @@
-+[package]
-+name = "qrcodegen"
-+version = "1.8.0"
-+authors = ["Project Nayuki"]
-+description = "High-quality QR Code generator library"
-+homepage = "https://www.nayuki.io/page/qr-code-generator-library"
-+repository = "https://github.com/nayuki/QR-Code-generator"
-+readme = "Readme.markdown"
-+keywords = ["qr-code", "barcode", "encoder", "image"]
-+categories = ["encoding", "multimedia::images"]
-+license = "MIT"
-+exclude = ["examples/*"]
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/vendor/qrcodegen/Readme.markdown 项目/第三方REC-pudding/构建/skyward-0.3.1/vendor/qrcodegen/Readme.markdown
---- 临时/up/src031/vendor/qrcodegen/Readme.markdown	1970-01-01 00:00:00.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/vendor/qrcodegen/Readme.markdown	2026-11-14 15:15:45.206999801 +0000
+diff -ruN a/vendor/qrcodegen/Readme.markdown b/vendor/qrcodegen/Readme.markdown
+--- a/vendor/qrcodegen/Readme.markdown	1970-01-01 00:00:00.000000000 +0000
++++ b/vendor/qrcodegen/Readme.markdown	2026-11-14 15:15:45.000000000 +0000
 @@ -0,0 +1,64 @@
 +QR Code generator library - Rust
 +================================
@@ -6471,9 +5372,9 @@ diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时
 +```
 +
 +More complete set of examples: https://github.com/nayuki/QR-Code-generator/blob/master/rust/examples/qrcodegen-demo.rs .
-diff -ruN -x target -x .git -x '*.log' -x build.log -x tmp -x __pycache__ 临时/up/src031/vendor/qrcodegen/src/lib.rs 项目/第三方REC-pudding/构建/skyward-0.3.1/vendor/qrcodegen/src/lib.rs
---- 临时/up/src031/vendor/qrcodegen/src/lib.rs	1970-01-01 00:00:00.000000000 +0000
-+++ 项目/第三方REC-pudding/构建/skyward-0.3.1/vendor/qrcodegen/src/lib.rs	2026-11-14 15:15:45.206999801 +0000
+diff -ruN a/vendor/qrcodegen/src/lib.rs b/vendor/qrcodegen/src/lib.rs
+--- a/vendor/qrcodegen/src/lib.rs	1970-01-01 00:00:00.000000000 +0000
++++ b/vendor/qrcodegen/src/lib.rs	2026-11-14 15:15:45.000000000 +0000
 @@ -0,0 +1,1302 @@
 +/* 
 + * QR Code generator library (Rust)
