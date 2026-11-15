@@ -1,5 +1,5 @@
 diff -ruN a/Cargo.lock b/Cargo.lock
---- a/Cargo.lock	2026-11-14 00:13:16.000000000 +0000
+--- a/Cargo.lock	2026-11-13 23:40:53.000000000 +0000
 +++ b/Cargo.lock	2026-11-14 15:15:45.000000000 +0000
 @@ -1899,6 +1899,10 @@
  ]
@@ -666,7 +666,7 @@ diff -ruN a/crates/skyward/src/fileserve.rs b/crates/skyward/src/fileserve.rs
 +    out
 +}
 diff -ruN a/crates/skyward/src/main.rs b/crates/skyward/src/main.rs
---- a/crates/skyward/src/main.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward/src/main.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward/src/main.rs	2026-11-14 15:40:59.000000000 +0000
 @@ -9,9 +9,16 @@
  
@@ -1339,7 +1339,7 @@ diff -ruN a/crates/skyward/src/secure.rs b/crates/skyward/src/secure.rs
  /// service whose process serves it; the directory's own entry is left out.
  fn registered() -> Result<Vec<(String, String)>> {
 diff -ruN a/crates/skyward/src/services.rs b/crates/skyward/src/services.rs
---- a/crates/skyward/src/services.rs	2026-11-14 00:12:50.000000000 +0000
+--- a/crates/skyward/src/services.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward/src/services.rs	2026-11-14 14:45:48.000000000 +0000
 @@ -68,7 +68,9 @@
              continue;
@@ -1363,14 +1363,6 @@ diff -ruN a/crates/skyward/src/services.rs b/crates/skyward/src/services.rs
      }
      Ok(())
  }
-@@ -357,7 +363,6 @@
- fn supervise(s: &Service, who: &Credentials, given: &Given) -> ! {
-     loop {
-         let started = Instant::now();
--        let _ = skyward_sys::kmsg(&format!("{}: being started", s.path));
-         let ended = match running(&s.path) {
-             Some(pid) => wait_for(pid).map(|()| format!("pid {pid}, left by an earlier recovery service, exited")),
-             None => run(s, who, given),
 diff -ruN a/crates/skyward/src/sortmem.rs b/crates/skyward/src/sortmem.rs
 --- a/crates/skyward/src/sortmem.rs	1970-01-01 00:00:00.000000000 +0000
 +++ b/crates/skyward/src/sortmem.rs	2026-11-14 15:40:59.000000000 +0000
@@ -1422,7 +1414,7 @@ diff -ruN a/crates/skyward/src/sortmem.rs b/crates/skyward/src/sortmem.rs
 +    written
 +}
 diff -ruN a/crates/skyward/src/ui.rs b/crates/skyward/src/ui.rs
---- a/crates/skyward/src/ui.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward/src/ui.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward/src/ui.rs	2026-11-15 00:13:37.000000000 +0000
 @@ -14,6 +14,7 @@
  use crate::systems;
@@ -2095,7 +2087,7 @@ diff -ruN a/crates/skyward/src/ui.rs b/crates/skyward/src/ui.rs
              Effect::Download(release) => self.download(release, now)?,
              Effect::StopDownload => self.downloader.as_ref().context("there is no download to stop")?.stop(),
 diff -ruN a/crates/skyward/src/updates.rs b/crates/skyward/src/updates.rs
---- a/crates/skyward/src/updates.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward/src/updates.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward/src/updates.rs	2026-11-14 10:52:17.000000000 +0000
 @@ -12,6 +12,7 @@
  use skyward_net::reach::{self, Reach};
@@ -2105,63 +2097,7 @@ diff -ruN a/crates/skyward/src/updates.rs b/crates/skyward/src/updates.rs
  use std::os::fd::RawFd;
  use std::path::{Path, PathBuf};
  use std::sync::atomic::{AtomicBool, Ordering};
-@@ -22,46 +23,6 @@
- /// The most often how far a download has come is told.
- const PROGRESS_EVERY: Duration = Duration::from_millis(200);
- 
--/// How long a source may send nothing at all before it is taken to have
--/// stalled and the next is asked for it: the part already written is where it
--/// carries on.
--///
--/// A rate was judged before, and it left working mirrors: a mirror bursts,
--/// pauses to fill its buffers, then bursts again, and a rate taken over three
--/// seconds falls near zero in the pause. What matters is whether bytes are
--/// still coming, not how fast they came.
--const STALL: Duration = Duration::from_secs(8);
--
--/// How much has to have arrived before a stall is judged at all: the first
--/// seconds of a connection are the handshake's.
--const JUDGE_AFTER: u64 = 512 * 1024;
--
--/// How many times in a row an address may fail without a byte arriving before
--/// it is left out of the rest of this download. The address GitHub itself
--/// hands over is often unreachable where a mirror is, and going back to it
--/// every other turn costs the connect timeout each time.
--const MISSES: u8 = 2;
--
--/// How long a source may send nothing at all before it is taken to have
--/// stalled and the next is asked for it: the part already written is where it
--/// carries on.
--///
--/// A rate was judged before, and it left working mirrors: a mirror bursts,
--/// pauses to fill its buffers, then bursts again, and a rate taken over three
--/// seconds falls near zero in the pause. What matters is whether bytes are
--/// still coming, not how fast they came.
--const STALL: Duration = Duration::from_secs(8);
--
--/// How much has to have arrived before a stall is judged at all: the first
--/// seconds of a connection are the handshake's.
--const JUDGE_AFTER: u64 = 512 * 1024;
--
--/// How many times in a row an address may fail without a byte arriving before
--/// it is left out of the rest of this download. The address GitHub itself
--/// hands over is often unreachable where a mirror is, and going back to it
--/// every other turn costs the connect timeout each time.
--const MISSES: u8 = 2;
--
- /// How long the speed shown is taken over.
- const RATE_OVER: Duration = Duration::from_secs(3);
- 
-@@ -81,7 +42,7 @@
-     /// Ask GitHub for Skyward's newest release and its zip for the phone
-     /// `codename` names; where that fails, `probe` says whether the network
-     /// is why.
--    CheckSkyward { probe: String, codename: String, at: String },
-+    CheckSkyward { probe: String, codename: String },
-     /// Download `build` to `path`, check that its image is Skyward for the
-     /// phone `codename` names, and write the image into the recovery
-     /// partitions of the slot that starts next and of any other slot that
-@@ -178,7 +139,7 @@
+@@ -138,7 +139,7 @@
                  Task::CheckSkyward { probe, codename } => {
                      let a = http::agent(servers.clone());
                      *using.lock().expect("the agent is not held by a thread that panicked") = Some(a.clone());
@@ -2170,7 +2106,7 @@ diff -ruN a/crates/skyward/src/updates.rs b/crates/skyward/src/updates.rs
                      tell(Event::SkywardChecked(answer));
                  }
                  // GitHub's API hands the zip out at a short-lived address
-@@ -188,7 +149,7 @@
+@@ -148,7 +149,7 @@
                  Task::UpdateSkyward { build, codename, path } => {
                      let a = http::agent(servers.clone());
                      *using.lock().expect("the agent is not held by a thread that panicked") = Some(a.clone());
@@ -2179,7 +2115,7 @@ diff -ruN a/crates/skyward/src/updates.rs b/crates/skyward/src/updates.rs
                          .inspect_err(|e| {
                              let _ = skyward_sys::kmsg(&format!("asking GitHub where {} is: {e:#}", build.name));
                          })
-@@ -199,7 +160,7 @@
+@@ -159,7 +160,7 @@
                              return Again::Retry;
                          }
                          located_again = true;
@@ -2188,114 +2124,50 @@ diff -ruN a/crates/skyward/src/updates.rs b/crates/skyward/src/updates.rs
                              Ok(fresh) => Again::From(build.sources(Some(fresh))),
                              Err(e) => {
                                  let _ = skyward_sys::kmsg(&format!("asking GitHub again where {} is: {e:#}", build.name));
-@@ -272,81 +233,29 @@
-     End(End),
- }
- 
--/// How much of an address is read to tell how fast it is, and how long that
--/// reading may take. The mirrors Skyward's own update goes through swing by an
--/// order of magnitude within minutes -- 520 KB/s one minute, 69 the next -- so
--/// the one asked first is the one that answers fastest just now, not the one
--/// that was fastest when the configuration was written.
-+/// Download the package `name`, whose digest is `sum`, to `path`, from
-+/// `urls` in turn, trying again while the connection fails and something
-+/// more comes each time; `refused` says what a server turning it down leads
-+/// to.
+@@ -236,6 +237,84 @@
+ /// `urls` in turn, trying again while the connection fails and something
+ /// more comes each time; `refused` says what a server turning it down leads
+ /// to.
 +/// How many bytes a mirror is asked for when it is measured.
- const SAMPLE_BYTES: usize = 256 * 1024;
--const SAMPLE_TIME: Duration = Duration::from_secs(3);
- 
--/// How many bytes `url` hands over within [`SAMPLE_TIME`], asked for the first
--/// [`SAMPLE_BYTES`] only. Nothing is kept: this is a measurement.
--fn sample(agent: &ureq::Agent, url: &str) -> usize {
--    let started = Instant::now();
--    let asked = format!("bytes=0-{}", SAMPLE_BYTES - 1);
--    let Ok(mut answer) = agent.get(url).header("Range", &asked).call() else {
--        return 0;
--    };
--    let mut reader = answer.body_mut().with_config().limit(u64::MAX).reader();
--    let mut buf = vec![0u8; 64 * 1024];
--    let mut got = 0;
--    while got < SAMPLE_BYTES && started.elapsed() < SAMPLE_TIME {
--        match reader.read(&mut buf) {
--            Ok(0) => break,
--            Ok(n) => got += n,
--            Err(_) => break,
--        }
--    }
--    got
--}
--
--/// The addresses, the one measured fastest first.
--fn by_speed(agent: &ureq::Agent, urls: Vec<String>) -> Vec<String> {
--    if urls.len() < 2 {
--        return urls;
--    }
--    let mut measured: Vec<(usize, String)> = urls.into_iter().map(|url| (sample(agent, &url), url)).collect();
--    measured.sort_by(|a, b| b.0.cmp(&a.0));
--    for (got, url) in &measured {
--        let _ = skyward_sys::kmsg(&format!(
--            "asking {} first: {got} bytes came in three seconds",
--            host(url)
--        ));
--    }
--    measured.into_iter().map(|(_, url)| url).collect()
--}
++const SAMPLE_BYTES: usize = 256 * 1024;
++
 +/// How long a mirror is measured for.
 +const SAMPLE_TIME: Duration = Duration::from_secs(3);
- 
--/// Which address to ask next: the one after `from` that has not been left
--/// out. Once every address has been left out they are all given one more turn,
--/// since the network may have come back.
--fn next_source(from: usize, left_out: &mut [bool], misses: &mut [u8]) -> usize {
--    let len = left_out.len();
--    for step in 1..=len {
--        let at = (from + step) % len;
--        if !left_out[at] {
--            return at;
--        }
--    }
--    left_out.iter_mut().for_each(|out| *out = false);
--    misses.iter_mut().for_each(|m| *m = 0);
--    (from + 1) % len
--}
++
 +/// The address that came fastest last time, kept for a while so asking twice
 +/// does not measure every mirror again.
 +static FASTEST: Mutex<Option<(String, Instant)>> = Mutex::new(None);
- 
--/// How much of an address is read to tell how fast it is, and how long that
--/// reading may take. The mirrors Skyward's own update goes through swing by an
--/// order of magnitude within minutes -- 520 KB/s one minute, 69 the next -- so
--/// the one asked first is the one that answers fastest just now, not the one
--/// that was fastest when the configuration was written.
--const SAMPLE_BYTES: usize = 256 * 1024;
--const SAMPLE_TIME: Duration = Duration::from_secs(3);
++
 +/// How long that answer is kept for.
 +const FASTEST_FOR: Duration = Duration::from_secs(30 * 60);
- 
- /// How many bytes `url` hands over within [`SAMPLE_TIME`], asked for the first
- /// [`SAMPLE_BYTES`] only. Nothing is kept: this is a measurement.
- fn sample(agent: &ureq::Agent, url: &str) -> usize {
-     let started = Instant::now();
-     let asked = format!("bytes=0-{}", SAMPLE_BYTES - 1);
--    let Ok(mut answer) = agent.get(url).header("Range", &asked).call() else {
++
++/// How many bytes `url` hands over within [`SAMPLE_TIME`], asked for the first
++/// [`SAMPLE_BYTES`] only. Nothing is kept: this is a measurement.
++fn sample(agent: &ureq::Agent, url: &str) -> usize {
++    let started = Instant::now();
++    let asked = format!("bytes=0-{}", SAMPLE_BYTES - 1);
 +    let Ok(mut answer) = agent.get(url).header("Range", asked).call() else {
-         return 0;
-     };
-     let mut reader = answer.body_mut().with_config().limit(u64::MAX).reader();
-@@ -362,42 +271,50 @@
-     got
- }
- 
--/// The addresses, the one measured fastest first.
--fn by_speed(agent: &ureq::Agent, urls: Vec<String>) -> Vec<String> {
++        return 0;
++    };
++    let mut reader = answer.body_mut().with_config().limit(u64::MAX).reader();
++    let mut buf = vec![0u8; 64 * 1024];
++    let mut got = 0;
++    while got < SAMPLE_BYTES && started.elapsed() < SAMPLE_TIME {
++        match reader.read(&mut buf) {
++            Ok(0) => break,
++            Ok(n) => got += n,
++            Err(_) => break,
++        }
++    }
++    got
++}
++
 +/// The addresses, the one measured fastest first, all measured at once: a
 +/// mirror that never answers must not hold up the ones that do.
 +fn by_speed(servers: &Servers, urls: Vec<String>) -> Vec<String> {
-     if urls.len() < 2 {
-         return urls;
-     }
--    let mut measured: Vec<(usize, String)> = urls.into_iter().map(|url| (sample(agent, &url), url)).collect();
++    if urls.len() < 2 {
++        return urls;
++    }
 +    let agent = http::probe_agent(servers.clone());
 +    let measured: Vec<(usize, String)> = thread::scope(|scope| {
 +        let measuring: Vec<_> = urls
@@ -2308,7 +2180,7 @@ diff -ruN a/crates/skyward/src/updates.rs b/crates/skyward/src/updates.rs
 +        measuring.into_iter().map(|m| m.join().unwrap_or((0, String::new()))).collect()
 +    });
 +    let mut measured = measured;
-     measured.sort_by(|a, b| b.0.cmp(&a.0));
++    measured.sort_by(|a, b| b.0.cmp(&a.0));
 +    // Whichever answered last time, first, so a page asked twice settles at
 +    // once; the measurement still puts it back if it has gone slow.
 +    let known = FASTEST
@@ -2323,157 +2195,31 @@ diff -ruN a/crates/skyward/src/updates.rs b/crates/skyward/src/updates.rs
 +            measured.insert(0, first);
 +        }
 +    }
-     for (got, url) in &measured {
--        let _ = skyward_sys::kmsg(&format!(
--            "asking {} first: {got} bytes came in three seconds",
--            host(url)
--        ));
++    for (got, url) in &measured {
 +        let _ = skyward_sys::kmsg(&format!("asking {} first: {got} bytes came in three seconds", host(url)));
-     }
--    measured.into_iter().map(|(_, url)| url).collect()
--}
--
--/// Which address to ask next: the one after `from` that has not been left
--/// out. Once every address has been left out they are all given one more turn,
--/// since the network may have come back.
--fn next_source(from: usize, left_out: &mut [bool], misses: &mut [u8]) -> usize {
--    let len = left_out.len();
--    for step in 1..=len {
--        let at = (from + step) % len;
--        if !left_out[at] {
--            return at;
++    }
 +    if let Some((_, url)) = measured.first() {
 +        if let Ok(mut known) = FASTEST.lock() {
 +            *known = Some((url.clone(), Instant::now()));
-         }
-     }
--    left_out.iter_mut().for_each(|out| *out = false);
--    misses.iter_mut().for_each(|m| *m = 0);
--    (from + 1) % len
++        }
++    }
 +    measured.into_iter().map(|(_, url)| url).collect()
- }
- 
--/// Download the package `name`, whose digest is `sum`, to `path`, from
--/// `urls` in turn, trying again while the connection fails and something
--/// more comes each time; `refused` says what a server turning it down leads
--/// to.
++}
++
  #[allow(clippy::too_many_arguments)]
  fn fetch(
      servers: &Servers,
-@@ -410,15 +327,12 @@
+@@ -248,6 +327,8 @@
      tell: &dyn Fn(Event),
      refused: &mut dyn FnMut(&ureq::Agent) -> Again,
  ) -> End {
--    // The fastest of the addresses answers first; the rest stay behind it for a
--    // source that stops sending.
--    let mut urls = by_speed(&http::agent(servers.clone()), urls);
 +    // The fastest mirror first, measured before a byte is taken from it.
 +    let mut urls = by_speed(servers, urls);
      let mut url = 0;
      let mut failed = 0;
      let mut samples: Vec<(Instant, u64)> = Vec::new();
-     let mut told = Instant::now() - PROGRESS_EVERY;
--    let mut misses = vec![0u8; urls.len()];
--    let mut left_out = vec![false; urls.len()];
-     loop {
-         if stop.load(Ordering::Relaxed) {
-             return End::Stopped;
-@@ -427,19 +341,14 @@
-         *using.lock().expect("the agent is not held by a thread that panicked") = Some(a.clone());
-         let mut came = None::<u64>;
-         let mut gained = false;
--        let mut seen = 0u64;
-         let mut last = None;
--        let mut last_gain = Instant::now();
--        let slow = AtomicBool::new(false);
-         let mut progress = |p: Progress| {
-             if let Progress::Downloading { done, .. } = p {
-                 let now = Instant::now();
-                 if came.is_some_and(|before| done > before) {
-                     gained = true;
--                    last_gain = now;
-                 }
-                 came = Some(done);
--                seen = seen.max(done);
-                 samples.push((now, done));
-                 samples.retain(|(at, _)| now.duration_since(*at) <= RATE_OVER);
-             }
-@@ -451,15 +360,9 @@
-                 told = Instant::now();
-                 tell(Event::Progress(p, rate));
-             }
--            // A source that has sent nothing for a while has stalled; one
--            // that is merely slow is left to it, since the next address may be
--            // slower still, or not reachable at all.
--            if seen > JUDGE_AFTER && last_gain.elapsed() >= STALL {
--                slow.store(true, Ordering::Relaxed);
--            }
-             last = Some((p, rate));
-         };
--        let result = download::fetch(&a, &urls[url], path, sum, stop, &slow, &mut progress);
-+        let result = download::fetch(&a, &urls[url], path, sum, stop, &mut progress);
-         // How far it came shows in the end, whatever stopped it.
-         if let Some((p, rate)) = last {
-             tell(Event::Progress(p, rate));
-@@ -477,36 +380,6 @@
-         if e.is::<Damaged>() {
-             return End::Failed(Failure::Damaged);
-         }
--        if e.is::<skyward_net::download::Slow>() {
--            let _ = skyward_sys::kmsg(&format!("downloading {name} from {}: nothing came for a while, asking the next", host(&urls[url])));
--            // The samples of the source left behind are not the next one's:
--            // kept, they make it look stalled too, and every source is left in
--            // turn without a byte written.
--            samples.clear();
--            // A source that stalls on every turn is not made better by trying
--            // it forever: the turns are counted so the download ends instead.
--            failed += 1;
--            if failed > TRIES * 2 {
--                return End::Failed(Failure::Other(format!("{e:#}")));
--            }
--            url = next_source(url, &mut left_out, &mut misses);
--            continue;
--        }
--        if e.is::<skyward_net::download::Slow>() {
--            let _ = skyward_sys::kmsg(&format!("downloading {name} from {}: nothing came for a while, asking the next", host(&urls[url])));
--            // The samples of the source left behind are not the next one's:
--            // kept, they make it look stalled too, and every source is left in
--            // turn without a byte written.
--            samples.clear();
--            // A source that stalls on every turn is not made better by trying
--            // it forever: the turns are counted so the download ends instead.
--            failed += 1;
--            if failed > TRIES * 2 {
--                return End::Failed(Failure::Other(format!("{e:#}")));
--            }
--            url = next_source(url, &mut left_out, &mut misses);
--            continue;
--        }
-         let _ = skyward_sys::kmsg(&format!("downloading {name} from {}: {e:#}", host(&urls[url])));
-         if e.is::<Refused>() {
-             match refused(&a) {
-@@ -520,18 +393,10 @@
-             }
-         }
-         failed = if gained { 1 } else { failed + 1 };
--        if gained {
--            misses[url] = 0;
--        } else {
--            misses[url] = misses[url].saturating_add(1);
--            if misses[url] >= MISSES && urls.len() > 1 {
--                left_out[url] = true;
--            }
--        }
-         if failed >= TRIES {
-             return End::Failed(Failure::Other(format!("{e:#}")));
-         }
--        url = next_source(url, &mut left_out, &mut misses);
-+        url = (url + 1) % urls.len();
-         let until = Instant::now() + BETWEEN;
-         while Instant::now() < until {
-             if stop.load(Ordering::Relaxed) {
 diff -ruN a/crates/skyward/src/wlan.rs b/crates/skyward/src/wlan.rs
---- a/crates/skyward/src/wlan.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward/src/wlan.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward/src/wlan.rs	2026-11-14 15:04:51.000000000 +0000
 @@ -55,6 +55,10 @@
  /// goes.
@@ -2756,7 +2502,7 @@ diff -ruN a/crates/skyward/src/wlanmem.rs b/crates/skyward/src/wlanmem.rs
 +    }
 +}
 diff -ruN a/crates/skyward-config/src/lib.rs b/crates/skyward-config/src/lib.rs
---- a/crates/skyward-config/src/lib.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward-config/src/lib.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward-config/src/lib.rs	2026-11-14 09:40:01.000000000 +0000
 @@ -41,6 +41,18 @@
      }
@@ -2788,7 +2534,7 @@ diff -ruN a/crates/skyward-config/src/lib.rs b/crates/skyward-config/src/lib.rs
      pub wipe: Wipe,
      #[serde(default)]
 diff -ruN a/crates/skyward-crypto/src/data.rs b/crates/skyward-crypto/src/data.rs
---- a/crates/skyward-crypto/src/data.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward-crypto/src/data.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward-crypto/src/data.rs	2026-11-14 15:17:26.000000000 +0000
 @@ -32,6 +32,12 @@
  /// The phone's owner, the first of its users.
@@ -3003,7 +2749,7 @@ diff -ruN a/crates/skyward-info/build.rs b/crates/skyward-info/build.rs
 +    println!("cargo:rerun-if-env-changed=SKYWARD_RELEASE");
 +}
 diff -ruN a/crates/skyward-info/src/lib.rs b/crates/skyward-info/src/lib.rs
---- a/crates/skyward-info/src/lib.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward-info/src/lib.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward-info/src/lib.rs	2026-11-15 00:24:05.000000000 +0000
 @@ -14,6 +14,21 @@
  /// Version of this build, shown on the About page.
@@ -3028,7 +2774,7 @@ diff -ruN a/crates/skyward-info/src/lib.rs b/crates/skyward-info/src/lib.rs
  const POWER_SUPPLY: &str = "/sys/class/power_supply";
  const SYS_BLOCK: &str = "/sys/class/block";
 diff -ruN a/crates/skyward-install/src/commands/avbctl.rs b/crates/skyward-install/src/commands/avbctl.rs
---- a/crates/skyward-install/src/commands/avbctl.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward-install/src/commands/avbctl.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward-install/src/commands/avbctl.rs	2026-11-14 15:25:30.000000000 +0000
 @@ -348,3 +348,103 @@
          }
@@ -3135,7 +2881,7 @@ diff -ruN a/crates/skyward-install/src/commands/avbctl.rs b/crates/skyward-insta
 +    set(&phone_of(&suffix, locked), which.check(), on).map_err(|e| anyhow::anyhow!("{e}"))
 +}
 diff -ruN a/crates/skyward-install/src/commands.rs b/crates/skyward-install/src/commands.rs
---- a/crates/skyward-install/src/commands.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward-install/src/commands.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward-install/src/commands.rs	2026-11-14 15:25:30.000000000 +0000
 @@ -13,7 +13,7 @@
  use std::ffi::{OsStr, OsString};
@@ -3147,7 +2893,7 @@ diff -ruN a/crates/skyward-install/src/commands.rs b/crates/skyward-install/src/
  mod sevenzip;
  mod unzip;
 diff -ruN a/crates/skyward-net/src/github.rs b/crates/skyward-net/src/github.rs
---- a/crates/skyward-net/src/github.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward-net/src/github.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward-net/src/github.rs	2026-11-14 23:28:23.000000000 +0000
 @@ -5,7 +5,11 @@
  use serde::Deserialize;
@@ -3243,7 +2989,7 @@ diff -ruN a/crates/skyward-net/src/http.rs b/crates/skyward-net/src/http.rs
  /// whatever its status: the caller says what a status means.
  pub fn agent(servers: Servers) -> ureq::Agent {
 diff -ruN a/crates/skyward-net/src/iface.rs b/crates/skyward-net/src/iface.rs
---- a/crates/skyward-net/src/iface.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward-net/src/iface.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward-net/src/iface.rs	2026-11-14 11:51:40.000000000 +0000
 @@ -77,6 +77,11 @@
  }
@@ -3258,7 +3004,7 @@ diff -ruN a/crates/skyward-net/src/iface.rs b/crates/skyward-net/src/iface.rs
      let fd = socket()?;
      let mut r = request(interface)?;
 diff -ruN a/crates/skyward-preview/src/main.rs b/crates/skyward-preview/src/main.rs
---- a/crates/skyward-preview/src/main.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward-preview/src/main.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward-preview/src/main.rs	2026-11-14 11:21:07.000000000 +0000
 @@ -959,7 +959,13 @@
              app.file_progress((0, 18_000), (0, 1));
@@ -3336,7 +3082,7 @@ diff -ruN a/crates/skyward-sys/src/lib.rs b/crates/skyward-sys/src/lib.rs
          Some(kept) => {
              let mut kept = kept.lock().expect("nothing panics while writing the log");
 diff -ruN a/crates/skyward-sys/src/usb.rs b/crates/skyward-sys/src/usb.rs
---- a/crates/skyward-sys/src/usb.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward-sys/src/usb.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward-sys/src/usb.rs	2026-11-15 00:04:39.000000000 +0000
 @@ -3,13 +3,28 @@
  //! beside it while file transfer is on.
@@ -3369,7 +3115,7 @@ diff -ruN a/crates/skyward-sys/src/usb.rs b/crates/skyward-sys/src/usb.rs
  pub fn resting() -> &'static str {
      if MTP.load(Ordering::Relaxed) {
 diff -ruN a/crates/skyward-ui/Cargo.toml b/crates/skyward-ui/Cargo.toml
---- a/crates/skyward-ui/Cargo.toml	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward-ui/Cargo.toml	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward-ui/Cargo.toml	2026-11-14 15:33:32.000000000 +0000
 @@ -5,6 +5,7 @@
  license.workspace = true
@@ -4562,7 +4308,7 @@ diff -ruN a/crates/skyward-ui/src/app/state.rs b/crates/skyward-ui/src/app/state
              details: None,
              adding: None,
 diff -ruN a/crates/skyward-ui/src/files.rs b/crates/skyward-ui/src/files.rs
---- a/crates/skyward-ui/src/files.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward-ui/src/files.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward-ui/src/files.rs	2026-11-14 23:00:48.000000000 +0000
 @@ -443,7 +443,8 @@
  pub fn strip(t: &Theme, f: &Fonts, top: &str, folder: &str) -> Pinned {
@@ -4609,7 +4355,7 @@ diff -ruN a/crates/skyward-ui/src/files.rs b/crates/skyward-ui/src/files.rs
  /// the reason under it when there is one.
  pub fn note(c: &mut Canvas, t: &Theme, f: &Fonts, title: &str, why: Option<&str>) {
 diff -ruN a/crates/skyward-ui/src/lib.rs b/crates/skyward-ui/src/lib.rs
---- a/crates/skyward-ui/src/lib.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward-ui/src/lib.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward-ui/src/lib.rs	2026-11-14 10:42:03.000000000 +0000
 @@ -14,6 +14,7 @@
  pub mod lang;
@@ -4620,7 +4366,7 @@ diff -ruN a/crates/skyward-ui/src/lib.rs b/crates/skyward-ui/src/lib.rs
  pub mod settings;
  pub mod sprite;
 diff -ruN a/crates/skyward-ui/src/pages.rs b/crates/skyward-ui/src/pages.rs
---- a/crates/skyward-ui/src/pages.rs	2026-11-14 00:13:16.000000000 +0000
+--- a/crates/skyward-ui/src/pages.rs	2026-11-13 23:40:53.000000000 +0000
 +++ b/crates/skyward-ui/src/pages.rs	2026-11-14 23:56:34.000000000 +0000
 @@ -1,7 +1,8 @@
  use crate::app::{
