@@ -1,0 +1,46 @@
+# feature	marker	file
+明文 data 兜底	keydirectory	-
+dm::status 后 remove	dm::status(MAPPED)	-
+unmap 幂等	None => Ok(())	-
+无 /data/unencrypted 放行	FILE_MODE	-
+跳过第二空间 999	SECOND_SPACE	-
+weaver_first 开关	weaver_first	-
+记住密码	/metadata/skyward/credential	-
+记住 WLAN	/metadata/skyward/wlan	-
+记住排序	/metadata/skyward/sort	-
+排序 UI	SortKey	-
+无线传输	fileserve	-
+网络下载	fetch::	-
+二维码回填	portal	-
+AVB 页	avbctl::turn	-
+界面优先计时	the drivers came up at	-
+密钥程序剔除	cannot run in a recovery on this phone	-
+更新镜像	MIRRORS	-
+OTG 端口无控制器	gadget_state	-
+息屏显示 aod	Panel::new	crates/skyward/src/aod.rs
+双击探测 touchprobe	DOUBLE_TAP	crates/skyward/src/touchprobe.rs
+密钥剔除清单进配置	leave_out	-
+WLAN 预热即开	fn warm_up	-
+锁屏日期	pub date: String	-
+无线传输选文件夹	ServeUseHere	-
+# 2026-11-16 追加（相对上游 0.3.1）
+U 盘文件页	FilesOtg	-
+读 U 盘目录	ReadOtg	-
+U 盘页文件夹状态	set_otg	-
+位置切换胶囊	places_other	-
+面包屑省略	elided	-
+手机→U 盘 / U 盘→手机	ToDrive	-
+反向互传	ToPhone	-
+跨位置路径换算	fn folder_here	-
+条目来源标记	file_on_drive	-
+U 盘读写挂载[w]	"rw", "nosuid"	-
+挂载前清理遗留	umount_detach	-
+文件操作按页刷新[w]	fn files_told	-
+记住密码改到解密页[w]	asking_remember	-
+记住密码风险卡	compose_remember_risk	-
+记住密码默认关[w]	remembered.is_some()	-
+跳过解密动画	Data::Closed | Data::Opening if	-
+解密完必进首页	fn decrypted	-
+崩溃写内核日志	the recovery ended on a panic	-
+更新日志精简	fn brief	-
+更新页日志区块	本次更新	-
