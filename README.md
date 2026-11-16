@@ -2,7 +2,7 @@
 
 小米 17（`pudding`，本机系统 OS4.0.6.0.XPCCNXM）可用的 Skyward recovery：**双系统 + data 解密**都能用。
 
-基于 [kirklin/skyward](https://github.com/kirklin/skyward) **v0.3.1**（GPL-3.0）自编译。改动见 `patches/skyward-pudding-v0.3.8.patch`，完整改动清单见 `docs/audit/`。发布公告文案见 `docs/发布公告.md`。
+基于 [kirklin/skyward](https://github.com/kirklin/skyward) **v0.3.1**（GPL-3.0）自编译。改动见 `patches/skyward-pudding-v0.3.9.patch`，完整改动清单见 `docs/audit/`。发布公告文案见 `docs/发布公告.md`。
 
 ## 这一版做了什么
 
@@ -43,6 +43,7 @@
 - **更新页显示本次更新**：从 release 说明里取 4 条要点
 - **崩溃可查**：panic 位置写入内核日志，重启后仍能翻到
 - **首页合并**：机型卡片并入账户行，点整行进详情页；锁屏滑块收窄居中
+- **U 盘多分区**：每个分区挂到独立目录，第一层列分区；首页去搜索框、设置去关于/更新
 
 逐条清单见 `docs/audit/changes-from-upstream-0.3.1.md`，版本序见 `docs/CHANGES.md`。
 
@@ -53,7 +54,7 @@
 ```sh
 fastboot devices
 fastboot getvar current-slot                 # 本机是 b
-fastboot flash recovery_b skyward-pudding-20261116-0.3.8-OS4.0.6.0.XPCCNXM.img
+fastboot flash recovery_b skyward-pudding-20261116-0.3.9-OS4.0.6.0.XPCCNXM.img
 fastboot reboot
 adb reboot recovery                          # 从系统进，别用 fastboot reboot recovery
 ```
@@ -65,11 +66,11 @@ adb reboot recovery                          # 从系统进，别用 fastboot re
 ## 校验
 
 ```
-镜像    skyward-pudding-20261116-0.3.8-OS4.0.6.0.XPCCNXM.img  104857600 字节
-sha256  b859b8ed260bcd04f561d2b0e8d3db49bc5abb37772372abb0c210099b62d25e
-md5     8fb5a700deb049d6a922cf8184e861a7
-zip     skyward-v0.3.8-pudding-OS4.0.6.0.XPCCNXM.zip  46362603 字节（更新器用）
-sha256  77377522846dc003f705adda902dc3ddc5e57d44e568d3ee7947c15d013d0a76
+镜像    skyward-pudding-20261116-0.3.9-OS4.0.6.0.XPCCNXM.img  104857600 字节
+sha256  5bc84127ee157357b724bdf915159d0a57c46978564b6df7c19a750d89eae95f
+md5     a0013ee62fad647c19a5c786c44a8351
+zip     skyward-v0.3.9-pudding-OS4.0.6.0.XPCCNXM.zip  46364309 字节（更新器用）
+sha256  11ade41512a43029ab4bdfdcd118f94ff9abb2d2f5015be4c1ef0ec6a9b42859
 ```
 
 ## 从源码重建
@@ -81,7 +82,7 @@ tar xzf skyward.tar.gz
 cd skyward-0.3.1
 
 # 2) 打本仓库的补丁（58 个文件、14 个新增，干跑零失败）
-patch -p1 < ../patches/skyward-pudding-v0.3.8.patch
+patch -p1 < ../patches/skyward-pudding-v0.3.9.patch
 
 # 3) 交叉编译（宿主 aarch64 也能编，见 docs/开发记录.md 的“两个坑”）
 rustup target add aarch64-linux-android
@@ -99,7 +100,7 @@ python3 scripts/avbwrap.py ramdisk.lz4 out.img
 
 - 地址写在 `device.toml` 的 `[update] skyward`，指向 `docs/update.json`（走 `gh-proxy.com` 镜像）
 - 本机实测下载速度：直连 `github.com` 71 KB/s、`ghfast.top` 500 KB/s、`ghproxy.net` 335 KB/s、**`gh-proxy.com` 1.5 MB/s**，取最快的
-- Release 里的 `skyward-v0.3.8-pudding-OS4.0.6.0.XPCCNXM.zip`（只含一个 `.img`）就是更新器要的格式；`docs/update.json` 里的 `digest` 与 `size` 必须和它一致
+- Release 里的 `skyward-v0.3.9-pudding-OS4.0.6.0.XPCCNXM.zip`（只含一个 `.img`）就是更新器要的格式；`docs/update.json` 里的 `digest` 与 `size` 必须和它一致
 - 发新版时：传 zip → 改 `docs/update.json` 的 `tag_name`/`size`/`digest`/URL → 提交。镜像不行就换 `[update] skyward` 的地址，不用重新编译
 
 ## 上游更新了怎么办
