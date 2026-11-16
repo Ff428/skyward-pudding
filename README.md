@@ -2,9 +2,7 @@
 
 小米 17（`pudding`，本机系统 OS4.0.6.0.XPCCNXM）可用的 Skyward recovery：**双系统 + data 解密**都能用。
 
-基于 [kirklin/skyward](https://github.com/kirklin/skyward) v0.2.0（GPL-3.0）自编译，发布公告文案见 `docs/发布公告.md`。
-
-改动见 `patches/`。
+基于 [kirklin/skyward](https://github.com/kirklin/skyward) **v0.3.1**（GPL-3.0）自编译。改动见 `patches/skyward-pudding-v0.3.7.patch`，完整改动清单见 `docs/audit/`。发布公告文案见 `docs/发布公告.md`。
 
 ## 这一版做了什么
 
@@ -32,6 +30,21 @@
 - **WiFi 起不来的两种情形都兜住**：驱动先建 `/sys/class/net/wlan0` 再应答 ioctl，中间撞上 ENODEV 会重试；整条起不来时自动重开，最多 3 次
 - **连接提速**：等网络时每 3 秒补一次扫描；DHCP 失败 3 秒重试；WLAN 驱动提前到服务启动阶段加载（实测开 WLAN 到联网从 19.4 秒降到 12.5 秒）
 
+## 近期新增（v0.3.2 → v0.3.7）
+
+- **U 盘文件管理**：文件管理页顶部与「内部存储」并排切换，可浏览 U 盘全部文件；高级页另有入口
+- **手机 ↔ U 盘互传**：长按文件「复制到 U 盘…」/「剪切到 U 盘…」，跳到 U 盘页浏览到目标目录后落地；反向同样。U 盘改读写挂载（原来只读，往里复制必失败）
+- **记住密码移到解密页**：输完密码才出现开关，开启时弹悬浮窗说明风险、滑动确认；已记住时可直接关掉；每次重新开启都会再问
+- **未记住时开机跳过转圈**，直接显示输密码页；自动解密完成直接进首页
+- **文件管理多选**：全选 / 复制 / 移动 / 批量删除
+- **下拉控制中心**：四个磁贴（WLAN、截图、重启、熄屏）+ 亮度与振动两条胶囊滑条
+- **主页账户行**：小米账户头像 + 设备名
+- **解密提速**：准备阶段 5.54 s → 1.84 s
+- **更新页显示本次更新**：从 release 说明里取 4 条要点
+- **崩溃可查**：panic 位置写入内核日志，重启后仍能翻到
+
+逐条清单见 `docs/audit/changes-from-upstream-0.3.1.md`，版本序见 `docs/CHANGES.md`。
+
 ## 下载与刷入
 
 到 [Releases](../../releases) 下最新的 `.img` 与 `SHA256SUMS`，校验后：
@@ -39,7 +52,7 @@
 ```sh
 fastboot devices
 fastboot getvar current-slot                 # 本机是 b
-fastboot flash recovery_b skyward-pudding-20261111-v0.2.33-OS4.0.6.0.XPCCNXM.img
+fastboot flash recovery_b skyward-pudding-20261116-0.3.7-OS4.0.6.0.XPCCNXM.img
 fastboot reboot
 adb reboot recovery                          # 从系统进，别用 fastboot reboot recovery
 ```
@@ -51,21 +64,23 @@ adb reboot recovery                          # 从系统进，别用 fastboot re
 ## 校验
 
 ```
-sha256  7139ebeb42edef296d6da7ea8893561161eb758c9cd06f85b73c9a9bf1b98d58
-zip     skyward-v0.2.33-pudding-OS4.0.6.0.XPCCNXM.zip（更新器用，sha256 efbc8918d53ba7443b28193a2a68eddb5bc643dff47be3756df2703044030356）
-大小    104857600
+镜像    skyward-pudding-20261116-0.3.7-OS4.0.6.0.XPCCNXM.img  104857600 字节
+sha256  7d4d57e158ccec19a2c18db34599cb6c2c403b4406785fef634b84312a9cb5e1
+md5     7adaa3e32328a7bb1b19f3880976f66e
+zip     skyward-v0.3.7-pudding-OS4.0.6.0.XPCCNXM.zip  46361566 字节（更新器用）
+sha256  d5cfdfa5970d4a7f39549330718f89ad73f395f1555d1bc72f57c2d0abebd6a
 ```
 
 ## 从源码重建
 
 ```sh
-# 1) 取上游
-curl -L -o skyward.tar.gz https://codeload.github.com/kirklin/skyward/tar.gz/refs/tags/v0.2.0
+# 1) 取上游（基线是 v0.3.1）
+curl -L -o skyward.tar.gz https://codeload.github.com/kirklin/skyward/tar.gz/refs/tags/v0.3.1
 tar xzf skyward.tar.gz
-cd skyward-0.2.0
+cd skyward-0.3.1
 
-# 2) 打本仓库的补丁
-patch -p1 < ../patches/skyward-pudding-v0.2.33.patch
+# 2) 打本仓库的补丁（58 个文件、14 个新增，干跑零失败）
+patch -p1 < ../patches/skyward-pudding-v0.3.7.patch
 
 # 3) 交叉编译（宿主 aarch64 也能编，见 docs/开发记录.md 的“两个坑”）
 rustup target add aarch64-linux-android
@@ -83,7 +98,7 @@ python3 scripts/avbwrap.py ramdisk.lz4 out.img
 
 - 地址写在 `device.toml` 的 `[update] skyward`，指向 `docs/update.json`（走 `gh-proxy.com` 镜像）
 - 本机实测下载速度：直连 `github.com` 71 KB/s、`ghfast.top` 500 KB/s、`ghproxy.net` 335 KB/s、**`gh-proxy.com` 1.5 MB/s**，取最快的
-- Release 里的 `skyward-v0.2.33-pudding-OS4.0.6.0.XPCCNXM.zip`（只含一个 `.img`）就是更新器要的格式；`docs/update.json` 里的 `digest` 与 `size` 必须和它一致
+- Release 里的 `skyward-v0.3.7-pudding-OS4.0.6.0.XPCCNXM.zip`（只含一个 `.img`）就是更新器要的格式；`docs/update.json` 里的 `digest` 与 `size` 必须和它一致
 - 发新版时：传 zip → 改 `docs/update.json` 的 `tag_name`/`size`/`digest`/URL → 提交。镜像不行就换 `[update] skyward` 的地址，不用重新编译
 
 ## 上游更新了怎么办
@@ -141,7 +156,7 @@ tar czf depot.tar.gz ramdisk.lz4 orig-min.img   # 上传这个，把直链填进
 
 ## 已知限制
 
-- 只针对 `pudding` / OS4.0.4.0.XPCCNXM 验证过，其他机型不要刷
+- 只针对 `pudding` / OS4.0.6.0.XPCCNXM 验证过，其他机型不要刷
 - 记住密码（锁屏与 WiFi）都是**明文**存在 `/metadata`（0600，root），恢复出厂会清；锁屏密码在解锁页点一下取消，WiFi 在设置里关开关
 - WiFi 自动连接只试一次：网络不在范围或加入失败不会重试，需要手动在 WLAN 页连
 - recovery 里没有 OMAPI，Thales weaver 起不来，所以走的是 gatekeeper 那条路（不影响解密）
